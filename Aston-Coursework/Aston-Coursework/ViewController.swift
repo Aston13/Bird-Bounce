@@ -9,6 +9,9 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let h = UIScreen.main.bounds.height;
+    let w = UIScreen.main.bounds.width;
 
     override func viewDidLoad() {
         super.viewDidLoad()

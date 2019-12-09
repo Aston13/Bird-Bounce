@@ -15,6 +15,7 @@
 		D9526E50239E8E5D003B281C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9526E4E239E8E5D003B281C /* LaunchScreen.storyboard */; };
 		D9526E5B239E8E5E003B281C /* Aston_CourseworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9526E5A239E8E5E003B281C /* Aston_CourseworkTests.swift */; };
 		D9526E66239E8E5E003B281C /* Aston_CourseworkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9526E65239E8E5E003B281C /* Aston_CourseworkUITests.swift */; };
+		D9526E74239E9956003B281C /* images in Resources */ = {isa = PBXBuildFile; fileRef = D9526E73239E9956003B281C /* images */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		D9526E61239E8E5E003B281C /* Aston-CourseworkUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Aston-CourseworkUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9526E65239E8E5E003B281C /* Aston_CourseworkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aston_CourseworkUITests.swift; sourceTree = "<group>"; };
 		D9526E67239E8E5E003B281C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D9526E73239E9956003B281C /* images */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = images; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				D9526E45239E8E5D003B281C /* SceneDelegate.swift */,
 				D9526E47239E8E5D003B281C /* ViewController.swift */,
 				D9526E49239E8E5D003B281C /* Main.storyboard */,
+				D9526E73239E9956003B281C /* images */,
 				D9526E4C239E8E5D003B281C /* Assets.xcassets */,
 				D9526E4E239E8E5D003B281C /* LaunchScreen.storyboard */,
 				D9526E51239E8E5D003B281C /* Info.plist */,
@@ -232,6 +235,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9526E74239E9956003B281C /* images in Resources */,
 				D9526E50239E8E5D003B281C /* LaunchScreen.storyboard in Resources */,
 				D9526E4D239E8E5D003B281C /* Assets.xcassets in Resources */,
 				D9526E4B239E8E5D003B281C /* Main.storyboard in Resources */,
