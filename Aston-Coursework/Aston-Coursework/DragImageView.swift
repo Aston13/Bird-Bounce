@@ -28,15 +28,19 @@ class DragImageView: UIImageView {
         // Constrain the movement to the phone screen bounds
         // Comments are in perspective to the top-left corner (x0,y0)
 
-        let halfx = self.bounds.midX // half the width of the crosshair image
-        newCenter.x = max(halfx, newCenter.x) // Left boundary
+        let halfx = self.bounds.midX // Half the width of the crosshair image
+        newCenter.x = max((maxNotch + halfx), newCenter.x) // Left boundary
         newCenter.x = min(screenWidth * 0.20 - halfx, newCenter.x) // Right boundary
 
-        let halfy = self.bounds.midY // half the height of the crosshair image
+        let halfy = self.bounds.midY // Half the height of the crosshair image
         newCenter.y = min(screenHeight * 0.70 - halfy, newCenter.y) // Bottom boundary
         newCenter.y = max(screenHeight * 0.30 + halfy, newCenter.y) // Top boundary
         
         self.center = newCenter
+        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         
     }
 }

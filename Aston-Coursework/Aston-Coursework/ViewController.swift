@@ -9,8 +9,9 @@
 import UIKit
 
 // Global variables
+public var maxNotch: CGFloat = 35;
 public var crosshairSize: CGFloat = 50;
-public var screenWidth = UIScreen.main.bounds.width
+public var screenWidth = UIScreen.main.bounds.width - maxNotch
 public var screenHeight = UIScreen.main.bounds.height
 
 protocol crosshairViewDelegate {
@@ -23,7 +24,7 @@ class ViewController: UIViewController, crosshairViewDelegate {
     
     func initialiseCrosshair() {
         crosshairImageView.image = UIImage(named: "aim.png")
-        crosshairImageView.frame = CGRect(x: screenWidth * 0.10 - crosshairSize/2, y: (screenHeight/2) - (crosshairSize/2), width: crosshairSize, height: crosshairSize)
+        crosshairImageView.frame = CGRect(x: maxNotch, y: (screenHeight/2) - (crosshairSize/2), width: crosshairSize, height: crosshairSize)
         self.view.addSubview(crosshairImageView)
     }
     
@@ -32,6 +33,16 @@ class ViewController: UIViewController, crosshairViewDelegate {
         // Do any additional setup after loading the view.
         
         crosshairImageView.myDelegate = self
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
         initialiseCrosshair()
+    }
+    
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscape
+    }
+    
+    override var shouldAutorotate: Bool {
+        return true
     }
 }
