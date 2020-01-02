@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Aston-Coursework.xcodeproj">
+      location = "group:/Users/AM/Documents/GitHub/16052488/Aston-Coursework/Aston-Coursework/aim.png">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/AM/Documents/GitHub/16052488/Aston-Coursework/Aston-Coursework/ball.png">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>

@@ -8,16 +8,22 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+protocol crosshairViewDelegate {
+    
+}
+
+class ViewController: UIViewController, crosshairViewDelegate {
     
     let h = UIScreen.main.bounds.height;
     let w = UIScreen.main.bounds.width;
+    
 
+    @IBOutlet weak var crosshairImageView: DragImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        crosshairImageView.myDelegate = self
     }
-
-
 }
-
