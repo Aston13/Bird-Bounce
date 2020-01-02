@@ -9,8 +9,11 @@
 import UIKit
 
 class DragImageView: UIImageView {
-
-    var startLocation: CGPoint?
+    
+    /* Original starting location used by touchesEnded() to reset crosshair */
+    var spawnPoint = CGPoint(x: maxNotch + crosshairSize/2,y: screenHeight/2)
+    
+    var startLocation: CGPoint? // Starting location used by touchesMoved()
     var myDelegate: crosshairViewDelegate?;
 
     
@@ -25,8 +28,9 @@ class DragImageView: UIImageView {
         let dy = currentLocation!.y - startLocation!.y
         var newCenter = CGPoint(x: self.center.x+dx, y: self.center.y+dy)
         
-        // Constrain the movement to the phone screen bounds
-        // Comments are in perspective to the top-left corner (x0,y0)
+        /* Constrain the movement of the crosshair.
+         * Comments are in perspective to the top-left corner of the screen (x0,y0).
+         */
 
         let halfx = self.bounds.midX // Half the width of the crosshair image
         newCenter.x = max((maxNotch + halfx), newCenter.x) // Left boundary
@@ -41,6 +45,6 @@ class DragImageView: UIImageView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
+        self.center = spawnPoint
     }
 }
