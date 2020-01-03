@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="aim.png" translatesAutoresizingMaskIntoConstraints="NO" id="bjK-6e-M5m" customClass="DragImageView" customModule="Aston_Coursework" customModuleProvider="target">
-                                <rect key="frame" x="308" y="162" width="50" height="50"/>
+                                <rect key="frame" x="20" y="162" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
