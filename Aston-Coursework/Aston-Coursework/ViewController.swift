@@ -16,6 +16,7 @@ public var screenWidth = UIScreen.main.bounds.width - maxNotch // Overall screen
 public var screenHeight = UIScreen.main.bounds.height
 
 var shotBalls = [UIDynamicItem]() // Delaration of an array to store UIDynamicItem objects
+public var crosshairVectorXY = CGPoint(x:0,y:0)
 
 /* Protocols for delegated functions */
 protocol ballViewDelegate {
@@ -66,13 +67,15 @@ class ViewController: UIViewController, ballViewDelegate {
         collisionBehavior = UICollisionBehavior(items: shotBalls)
         dynamicAnimator.addBehavior(collisionBehavior)
         
-        
-        
-        self.dynamicBehavior.addLinearVelocity(CGPoint(x:500, y:0), for: shotBall) // Speed and direction
+        /* Behaviour Configurations */
+        // Angle
+        self.dynamicBehavior.addLinearVelocity(CGPoint(x:crosshairVectorXY.x, y:crosshairVectorXY.y), for: shotBall) // Speed and direction
         self.gravityBehavior.magnitude = 0.2 // Gravitational force
-        self.collisionBehavior.translatesReferenceBoundsIntoBoundary = true // Collision boundaries
-        //self.collisionBehavior.removeBoundary(withIdentifier: )
-        
+
+        /* Collision Boundaries - left, top and bottom sides of the screen */
+        self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:0, y:screenHeight))
+        self.collisionBehavior.addBoundary(withIdentifier: "topBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x: screenWidth + maxNotch, y: 0))
+        self.collisionBehavior.addBoundary(withIdentifier: "bottomBoundary" as NSCopying, from: CGPoint(x:0, y:screenHeight), to: CGPoint(x: screenWidth + maxNotch, y: screenHeight))
     }
     
     /* Intialise and setup */

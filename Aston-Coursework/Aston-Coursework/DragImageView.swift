@@ -43,7 +43,13 @@ class DragImageView: UIImageView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.center = spawnPoint
-        self.myBallDelegate?.shoot()
+        /* Update the x and y angle of the shot just taken.
+         * Multiply each CGFloat by the desired speed for each axis (i.e * 10)
+         */
+        crosshairVectorXY.x = (self.center.x - spawnPoint.x) * 10
+        crosshairVectorXY.y = (self.center.y - spawnPoint.y) * 10
+        
+        self.center = spawnPoint // Reset crosshair to original position
+        self.myBallDelegate?.shoot() // Call the shoot function
     }
 }
