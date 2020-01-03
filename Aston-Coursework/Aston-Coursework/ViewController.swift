@@ -14,8 +14,13 @@ public var crosshairSize: CGFloat = 50; // Crosshair size - square - even x and 
 public var ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
 public var screenWidth = UIScreen.main.bounds.width - maxNotch // Overall screen width - not including notch
 public var screenHeight = UIScreen.main.bounds.height
+public var birdSize: CGFloat = (screenHeight-30)/5
 
+var bird = UIImageView(image:nil)
+var shotBall = UIImageView(image: nil)
 var shotBalls = [UIDynamicItem]() // Delaration of an array to store UIDynamicItem objects
+//var birds = [UIDynamicItem]()
+
 public var crosshairVectorXY = CGPoint(x:0,y:0)
 
 /* Protocols for delegated functions */
@@ -27,7 +32,7 @@ class ViewController: UIViewController, ballViewDelegate {
 
     @IBOutlet weak var crosshairImageView: DragImageView! // Crosshair image outlet reference
     
-    var dynamicAnimator: UIDynamicAnimator!
+    var dynamicAnimator: UIDynamicAnimator!     // Physics Engine
     var dynamicBehavior: UIDynamicItemBehavior! // Declare dynamic behaviour
     var collisionBehavior: UICollisionBehavior! // Declare collisions
     var gravityBehavior: UIGravityBehavior!     // Declare gravity
@@ -41,41 +46,64 @@ class ViewController: UIViewController, ballViewDelegate {
         self.view.addSubview(crosshairImageView)
     }
     
+    func addBird() {
+        bird = UIImageView(image: nil)
+        bird.image = UIImage(named: "bird4.png")
+        bird.frame = CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize)
+        bird.backgroundColor = UIColor.red
+        self.view.addSubview(bird)
+
+
+        //birds.append(bird)
+
+//        dynamicBehavior = UIDynamicItemBehavior(items: [bird])
+//        dynamicAnimator.addBehavior(dynamicBehavior)
+//
+//        collisionBehavior = UICollisionBehavior(items: [bird])
+//        //collisionBehavior = UICollisionBehavior(items: birds)
+//        dynamicAnimator.addBehavior(collisionBehavior)
+        
+    }
+    
     /* Function called by touchesEnded() in DragImageView that 'shoots' a ball. The function creates a new
      * UIImage Ball, adds it to the subview and the ball array and then UIDynamics is implemented.
      */
     func shoot() {
+        
         /* Create a ball and add it to the subview */
-        let shotBall = UIImageView(image: nil)
+        shotBall = UIImageView(image: nil)
         shotBall.image = UIImage(named: "ball.png")
         shotBall.frame = CGRect(x: maxNotch, y: (screenHeight/2 - crosshairSize/2), width: ballSize, height: ballSize)
+        shotBall.backgroundColor = UIColor.blue
         self.view.addSubview(shotBall)
         
-        shotBalls.append(shotBall) // Add the newly created ball that has been shot to the balls array
+        shotBalls.append(shotBall) // Add the newly created ball that has been shot to the shotBalls array
         
-        /* Add behaviours to the ball objects */
+        /* Behaviours */
+        
         /* Dynamic Item Behaviour */
-        dynamicBehavior = UIDynamicItemBehavior(items: shotBalls) // Add balls to the dynamic item behaviour
-        dynamicAnimator.addBehavior(dynamicBehavior) // Add behaviour to the animator
+        dynamicBehavior = UIDynamicItemBehavior(items: [shotBall]) // Add balls to the dynamic item behaviour
         
+        // Speed and direction
+        self.dynamicBehavior.addLinearVelocity(CGPoint(x:crosshairVectorXY.x, y:crosshairVectorXY.y), for: shotBall)
         
-        /* Gravity Behaviour */
-        gravityBehavior = UIGravityBehavior(items: shotBalls)
-        dynamicAnimator.addBehavior(gravityBehavior)
-        
-        /* Collision Behaviour */
-        collisionBehavior = UICollisionBehavior(items: shotBalls)
-        dynamicAnimator.addBehavior(collisionBehavior)
-        
-        /* Behaviour Configurations */
-        // Angle
-        self.dynamicBehavior.addLinearVelocity(CGPoint(x:crosshairVectorXY.x, y:crosshairVectorXY.y), for: shotBall) // Speed and direction
-        self.gravityBehavior.magnitude = 0.2 // Gravitational force
+        dynamicAnimator.addBehavior(dynamicBehavior) // Add dynamic item to animator
 
-        /* Collision Boundaries - left, top and bottom sides of the screen */
+        /* Gravity Behaviour */
+        gravityBehavior = UIGravityBehavior(items: [shotBall])
+        self.gravityBehavior.magnitude = 0.2 // Gravitational force
+        
+        dynamicAnimator.addBehavior(gravityBehavior) // Add gravity to animator
+
+        /* Collision Behaviour */
+        collisionBehavior = UICollisionBehavior(items: [shotBall, bird])
+        
+        // Collision Boundaries - left, top and bottom sides of the screen
         self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:0, y:screenHeight))
         self.collisionBehavior.addBoundary(withIdentifier: "topBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x: screenWidth + maxNotch, y: 0))
         self.collisionBehavior.addBoundary(withIdentifier: "bottomBoundary" as NSCopying, from: CGPoint(x:0, y:screenHeight), to: CGPoint(x: screenWidth + maxNotch, y: screenHeight))
+        
+        dynamicAnimator.addBehavior(collisionBehavior) // Add collision to animator
     }
     
     /* Intialise and setup */
@@ -84,18 +112,17 @@ class ViewController: UIViewController, ballViewDelegate {
         
         /* Passes the main view to dynamics as the reference view */
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
-        
+        addBird()
         crosshairImageView.myBallDelegate = self
         
         /* Orientation Initialisation */
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         
+
         initialiseCrosshair()
+
     }
-    
-    
-    
     
     /* Functions to force orientation and autorotate */
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -105,4 +132,5 @@ class ViewController: UIViewController, ballViewDelegate {
     override var shouldAutorotate: Bool {
         return true
     }
+    
 }
