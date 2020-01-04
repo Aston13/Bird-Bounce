@@ -7,10 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		818702EB23BF97BE0084FE73 /* bird4.png in Resources */ = {isa = PBXBuildFile; fileRef = 818702EA23BF97BE0084FE73 /* bird4.png */; };
-		81E4E41F23BE36E0003F12D9 /* aim.png in Resources */ = {isa = PBXBuildFile; fileRef = 81E4E41E23BE36E0003F12D9 /* aim.png */; };
 		81E4E42123BE3778003F12D9 /* DragImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4E42023BE3778003F12D9 /* DragImageView.swift */; };
-		81E4E42323BE9651003F12D9 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = 81E4E42223BE9651003F12D9 /* ball.png */; };
 		D9526E44239E8E5D003B281C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9526E43239E8E5D003B281C /* AppDelegate.swift */; };
 		D9526E46239E8E5D003B281C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9526E45239E8E5D003B281C /* SceneDelegate.swift */; };
 		D9526E48239E8E5D003B281C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9526E47239E8E5D003B281C /* ViewController.swift */; };
@@ -39,10 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		818702EA23BF97BE0084FE73 /* bird4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird4.png; sourceTree = "<group>"; };
-		81E4E41E23BE36E0003F12D9 /* aim.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aim.png; sourceTree = "<group>"; };
 		81E4E42023BE3778003F12D9 /* DragImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragImageView.swift; sourceTree = "<group>"; };
-		81E4E42223BE9651003F12D9 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball.png; sourceTree = "<group>"; };
 		D9526E40239E8E5D003B281C /* Aston-Coursework.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aston-Coursework.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9526E43239E8E5D003B281C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D9526E45239E8E5D003B281C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,14 +101,11 @@
 		D9526E42239E8E5D003B281C /* Aston-Coursework */ = {
 			isa = PBXGroup;
 			children = (
-				81E4E41E23BE36E0003F12D9 /* aim.png */,
 				D9526E43239E8E5D003B281C /* AppDelegate.swift */,
 				D9526E45239E8E5D003B281C /* SceneDelegate.swift */,
 				D9526E47239E8E5D003B281C /* ViewController.swift */,
-				818702EA23BF97BE0084FE73 /* bird4.png */,
 				81E4E42023BE3778003F12D9 /* DragImageView.swift */,
 				D9526E49239E8E5D003B281C /* Main.storyboard */,
-				81E4E42223BE9651003F12D9 /* ball.png */,
 				D9526E4C239E8E5D003B281C /* Assets.xcassets */,
 				D9526E4E239E8E5D003B281C /* LaunchScreen.storyboard */,
 				D9526E51239E8E5D003B281C /* Info.plist */,
@@ -245,11 +236,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D9526E50239E8E5D003B281C /* LaunchScreen.storyboard in Resources */,
-				81E4E42323BE9651003F12D9 /* ball.png in Resources */,
-				81E4E41F23BE36E0003F12D9 /* aim.png in Resources */,
 				D9526E4D239E8E5D003B281C /* Assets.xcassets in Resources */,
 				D9526E4B239E8E5D003B281C /* Main.storyboard in Resources */,
-				818702EB23BF97BE0084FE73 /* bird4.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

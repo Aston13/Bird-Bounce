@@ -22,10 +22,22 @@ var shotBall = UIImageView(image: nil)
 var shotBalls = [UIImageView]() // Delaration of an array to store UIDynamicItem objects
 var obstacleArray = [UIImageView]()
 let scoreLabel = UILabel()
+var totalScore: Int = 0
 
-var birdPositions = [Int]()
+var birdPositions: [Int] = [0,0,0,0,0]
+
+var positionsArray: [CGRect] = [
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 10 + birdSize, width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 15 + (birdSize*2), width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 20 + (birdSize*3), width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 25 + (birdSize*4), width: birdSize, height: birdSize)]
 
 public var crosshairVectorXY = CGPoint(x:0,y:0)
+
+
+
+
 
 /* Protocols for delegated functions */
 protocol ballViewDelegate {
@@ -50,27 +62,33 @@ class ViewController: UIViewController, ballViewDelegate {
         self.view.addSubview(crosshairImageView)
     }
     
-    func addBird() {
-        var position = CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize)
+    func checkEmptyBirdPositions() {
         
-        for emptyPosition in birdPositions {
-            if emptyPosition == 1 {
-                position = CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize)
-            } else if emptyPosition == 2 {
-                
-            } else if emptyPosition == 3 {
-                
-            } else if emptyPosition == 4 {
-                
-            } else if emptyPosition == 5 {
-                
-            } else {
-                break
-            }
+        let slot: Int = Int(arc4random_uniform(5))
+        
+        if birdPositions[slot] == 0 {
+                addBird(position: positionsArray[slot])
+                birdPositions[slot] = 1
         }
+    }
+    
+    func clearSlot(deadSlot: CGRect) {
+        var count: Int = 0
+        
+        for slot in positionsArray {
+            if slot.equalTo(deadSlot) {
+                birdPositions[count] = 0
+                break;
+            }
+            count+=1
+        }
+    }
+    
+    func addBird(position: CGRect) {
+
         
         bird = UIImageView(image: nil)
-        bird.image = UIImage(named: "bird4.png")
+        bird.image = UIImage(named: "bird\(arc4random_uniform(12) + 1)")
         bird.frame = position
         //bird.backgroundColor = UIColor.red
         self.view.addSubview(bird)
@@ -118,15 +136,33 @@ class ViewController: UIViewController, ballViewDelegate {
 
         /* Collision Behaviour */
         collisionBehavior = UICollisionBehavior(items: shotBalls)
+        
+        /* Passively checks for collision between ball and bird */
         collisionBehavior.action = {
-            
-            for item in shotBalls {
-                if item.frame.intersects(bird.frame) {
-                    bird.isHidden = true
-                    self.increaseScore(score: 10)
+            for itema in shotBalls {
+                for itemb in birds {
+                    if itema.frame.intersects(itemb.frame) {
+                        
+                        let before = self.view.subviews.count
+                        itemb.removeFromSuperview()
+                        let after = self.view.subviews.count
+                        
+                        if (before != after){
+                            self.clearSlot(deadSlot: itemb.frame)
+                            self.increaseScore(score: 1)
+                        }
+                    }
                 }
             }
         }
+        
+        /* Despawn balls after 5 seconds - frees up memory */
+        _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block:{_ in
+            if shotBalls.isEmpty == false {
+                shotBalls[0].removeFromSuperview()
+                shotBalls.removeFirst()
+            }
+        })
         
         // Collision Boundaries - left, top and bottom sides of the screen
         self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:0, y:screenHeight))
@@ -136,26 +172,31 @@ class ViewController: UIViewController, ballViewDelegate {
         dynamicAnimator.addBehavior(collisionBehavior) // Add collision to animator
     }
     
-    func initialiseScoreLabel(score:Int) {
+    func initialiseScoreLabel() {
         scoreLabel.frame = CGRect(x:maxNotch, y:10, width:100, height:20)
         scoreLabel.textAlignment = NSTextAlignment.left
-        scoreLabel.text = "Score: \(score)"
+        scoreLabel.text = "Score: \(totalScore)"
         self.view.addSubview(scoreLabel)
         
     }
     
     func increaseScore(score:Int) {
-        var total = 0
-        total += score
-        scoreLabel.text = "Score: \(total)"
+        totalScore = totalScore + score
+        scoreLabel.text = "Score: \(totalScore)"
     }
     
     /* Intialise and setup */
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
+        
         /* Passes the main view to dynamics as the reference view */
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
-        addBird()
+        
+        _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block:{_ in
+            self.checkEmptyBirdPositions()
+        })
         crosshairImageView.myBallDelegate = self
     
         /* Orientation Initialisation */
@@ -164,7 +205,7 @@ class ViewController: UIViewController, ballViewDelegate {
         
 
         initialiseCrosshair()
-        initialiseScoreLabel(score:0)
+        initialiseScoreLabel()
 
     }
     
