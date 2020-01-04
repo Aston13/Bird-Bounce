@@ -11,12 +11,20 @@ import UIKit
 /* Global variables */
 /* Dimensions */
 let maxNotch: CGFloat = 35 // Maximum thickness of the notch area on an iPhone
-let screenWidth = UIScreen.main.bounds.width - maxNotch // Overall screen width - not including notch
-let screenHeight = UIScreen.main.bounds.height
+var screenWidth = UIScreen.main.bounds.width - maxNotch // Overall screen width - not including notch
+var screenHeight = UIScreen.main.bounds.height
 let crosshairSize: CGFloat = 50 // Crosshair size - square - even x and y dimensions
 var crosshairVectorXY = CGPoint(x:0,y:0) // Vector used to store and retrieve the angle of the shot fired
 let birdSize: CGFloat = (screenHeight-30)/5
 let ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
+
+/* 5 possible bird co-ordinate positions TR -> BR */
+let positionsArray: [CGRect] = [
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 10 + birdSize, width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 15 + (birdSize*2), width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 20 + (birdSize*3), width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 25 + (birdSize*4), width: birdSize, height: birdSize)]
 
 /* Protocols for delegated functions */
 protocol ballViewDelegate {
@@ -33,15 +41,7 @@ class ViewController: UIViewController, ballViewDelegate {
     var bird = UIImageView(image:nil)
     var birds = [UIImageView]()
     var birdPositions: [Int] = [0,0,0,0,0] // Bird position slots TR -> BR. 0 = Empty. 1 = Occupied.
-
-    /* 5 possible bird co-ordinate positions TR -> BR */
-    let positionsArray: [CGRect] = [
-        CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize),
-        CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 10 + birdSize, width: birdSize, height: birdSize),
-        CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 15 + (birdSize*2), width: birdSize, height: birdSize),
-        CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 20 + (birdSize*3), width: birdSize, height: birdSize),
-        CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 25 + (birdSize*4), width: birdSize, height: birdSize)]
-
+    
     /* UI */
     let scoreLabel = UILabel()
     var totalScore: Int = 0
