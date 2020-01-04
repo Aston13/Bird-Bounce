@@ -17,10 +17,13 @@ public var screenHeight = UIScreen.main.bounds.height
 public var birdSize: CGFloat = (screenHeight-30)/5
 
 var bird = UIImageView(image:nil)
+var birds = [UIImageView]()
 var shotBall = UIImageView(image: nil)
-var shotBalls = [UIDynamicItem]() // Delaration of an array to store UIDynamicItem objects
+var shotBalls = [UIImageView]() // Delaration of an array to store UIDynamicItem objects
 var obstacleArray = [UIImageView]()
 let scoreLabel = UILabel()
+
+var birdPositions = [Int]()
 
 public var crosshairVectorXY = CGPoint(x:0,y:0)
 
@@ -48,13 +51,31 @@ class ViewController: UIViewController, ballViewDelegate {
     }
     
     func addBird() {
+        var position = CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize)
+        
+        for emptyPosition in birdPositions {
+            if emptyPosition == 1 {
+                position = CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize)
+            } else if emptyPosition == 2 {
+                
+            } else if emptyPosition == 3 {
+                
+            } else if emptyPosition == 4 {
+                
+            } else if emptyPosition == 5 {
+                
+            } else {
+                break
+            }
+        }
+        
         bird = UIImageView(image: nil)
         bird.image = UIImage(named: "bird4.png")
-        bird.frame = CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize)
-        bird.backgroundColor = UIColor.red
+        bird.frame = position
+        //bird.backgroundColor = UIColor.red
         self.view.addSubview(bird)
 
-        //birds.append(bird)
+        birds.append(bird)
 
 //        dynamicBehavior = UIDynamicItemBehavior(items: [bird])
 //        dynamicAnimator.addBehavior(dynamicBehavior)
@@ -74,7 +95,7 @@ class ViewController: UIViewController, ballViewDelegate {
         shotBall = UIImageView(image: nil)
         shotBall.image = UIImage(named: "ball.png")
         shotBall.frame = CGRect(x: maxNotch, y: (screenHeight/2 - crosshairSize/2), width: ballSize, height: ballSize)
-        shotBall.backgroundColor = UIColor.blue
+        //shotBall.backgroundColor = UIColor.blue
         self.view.addSubview(shotBall)
         
         shotBalls.append(shotBall) // Add the newly created ball that has been shot to the shotBalls array
@@ -96,12 +117,14 @@ class ViewController: UIViewController, ballViewDelegate {
         dynamicAnimator.addBehavior(gravityBehavior) // Add gravity to animator
 
         /* Collision Behaviour */
-        collisionBehavior = UICollisionBehavior(items: [shotBall])
+        collisionBehavior = UICollisionBehavior(items: shotBalls)
         collisionBehavior.action = {
-            if shotBall.frame.intersects(bird.frame) {
-                bird.isHidden = true
-                self.increaseScore(score: 10)
-                
+            
+            for item in shotBalls {
+                if item.frame.intersects(bird.frame) {
+                    bird.isHidden = true
+                    self.increaseScore(score: 10)
+                }
             }
         }
         
