@@ -28,9 +28,13 @@ var birdPositions: [Int] = [0,0,0,0,0]
 
 var positionsArray: [CGRect] = [
     CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize),
+    
     CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 10 + birdSize, width: birdSize, height: birdSize),
+    
     CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 15 + (birdSize*2), width: birdSize, height: birdSize),
+    
     CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 20 + (birdSize*3), width: birdSize, height: birdSize),
+    
     CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 25 + (birdSize*4), width: birdSize, height: birdSize)]
 
 public var crosshairVectorXY = CGPoint(x:0,y:0)
@@ -64,32 +68,35 @@ class ViewController: UIViewController, ballViewDelegate {
     
     func checkEmptyBirdPositions() {
         
-        let slot: Int = Int(arc4random_uniform(5))
+        let randomSlotNum: Int = Int(arc4random_uniform(5))
         
-        if birdPositions[slot] == 0 {
-                addBird(position: positionsArray[slot])
-                birdPositions[slot] = 1
+        if birdPositions[randomSlotNum] == 0 { // If slot is empty
+            addBird(position: positionsArray[randomSlotNum], slotNum: randomSlotNum) // Add bird to slot
+                birdPositions[randomSlotNum] = 1
         }
     }
     
-    func clearSlot(deadSlot: CGRect) {
-        var count: Int = 0
-        
-        for slot in positionsArray {
-            if slot.equalTo(deadSlot) {
-                birdPositions[count] = 0
-                break;
-            }
-            count+=1
-        }
-    }
+//    func clearSlot(deadSlot: Int) {
+//        var count: Int = 0
+//        var count:CGPoint = CGPoint(deadSlot.midX)
+//        for slot in positionsArray {
+//            if slot.equalTo(deadSlot) {
+//                birdPositions[count] = 0
+//                break;
+//            }
+//            count+=1
+//        }
+//
+//
+//    }
     
-    func addBird(position: CGRect) {
+    func addBird(position: CGRect, slotNum: Int) {
 
         
         bird = UIImageView(image: nil)
         bird.image = UIImage(named: "bird\(arc4random_uniform(12) + 1)")
         bird.frame = position
+        bird.tag = slotNum
         //bird.backgroundColor = UIColor.red
         self.view.addSubview(bird)
 
@@ -148,7 +155,7 @@ class ViewController: UIViewController, ballViewDelegate {
                         let after = self.view.subviews.count
                         
                         if (before != after){
-                            self.clearSlot(deadSlot: itemb.frame)
+                            birdPositions[Int(itemb.tag)] = 0
                             self.increaseScore(score: 1)
                         }
                     }
