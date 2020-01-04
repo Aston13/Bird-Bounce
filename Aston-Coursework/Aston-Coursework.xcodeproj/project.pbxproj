@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8171E1BD23C1551600CBEA44 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171E1BC23C1551600CBEA44 /* MenuViewController.swift */; };
+		8171E1BF23C158FA00CBEA44 /* EndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171E1BE23C158FA00CBEA44 /* EndViewController.swift */; };
 		81E4E42123BE3778003F12D9 /* DragImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4E42023BE3778003F12D9 /* DragImageView.swift */; };
 		D9526E44239E8E5D003B281C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9526E43239E8E5D003B281C /* AppDelegate.swift */; };
 		D9526E46239E8E5D003B281C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9526E45239E8E5D003B281C /* SceneDelegate.swift */; };
@@ -36,6 +38,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8171E1BC23C1551600CBEA44 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		8171E1BE23C158FA00CBEA44 /* EndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndViewController.swift; sourceTree = "<group>"; };
 		81E4E42023BE3778003F12D9 /* DragImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragImageView.swift; sourceTree = "<group>"; };
 		D9526E40239E8E5D003B281C /* Aston-Coursework.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aston-Coursework.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9526E43239E8E5D003B281C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,7 +107,9 @@
 			children = (
 				D9526E43239E8E5D003B281C /* AppDelegate.swift */,
 				D9526E45239E8E5D003B281C /* SceneDelegate.swift */,
+				8171E1BC23C1551600CBEA44 /* MenuViewController.swift */,
 				D9526E47239E8E5D003B281C /* ViewController.swift */,
+				8171E1BE23C158FA00CBEA44 /* EndViewController.swift */,
 				81E4E42023BE3778003F12D9 /* DragImageView.swift */,
 				D9526E49239E8E5D003B281C /* Main.storyboard */,
 				D9526E4C239E8E5D003B281C /* Assets.xcassets */,
@@ -262,7 +268,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8171E1BF23C158FA00CBEA44 /* EndViewController.swift in Sources */,
 				D9526E48239E8E5D003B281C /* ViewController.swift in Sources */,
+				8171E1BD23C1551600CBEA44 /* MenuViewController.swift in Sources */,
 				D9526E44239E8E5D003B281C /* AppDelegate.swift in Sources */,
 				81E4E42123BE3778003F12D9 /* DragImageView.swift in Sources */,
 				D9526E46239E8E5D003B281C /* SceneDelegate.swift in Sources */,

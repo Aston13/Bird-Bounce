@@ -66,6 +66,11 @@ class ViewController: UIViewController, ballViewDelegate {
             self.checkEmptyBirdPositions()
         })
         
+        
+        _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block:{_ in
+            self.gameOver()
+        })
+        
         /* Orientation Initialisation */
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
@@ -73,6 +78,12 @@ class ViewController: UIViewController, ballViewDelegate {
         crosshairImageView.myBallDelegate = self
         initialiseCrosshair()
         initialiseScoreLabel()
+    }
+    
+    func gameOver(){
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "endGame") as! EndViewController
+        
+        self.present(vc, animated: false, completion: nil)
     }
     
     /* Function to force orientation to landscape. */
