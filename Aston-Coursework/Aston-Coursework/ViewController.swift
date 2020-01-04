@@ -9,8 +9,8 @@
 import UIKit
 
 /* Global variables */
-public var maxNotch: CGFloat = 35; // Maximum thickness of the notch area on an iPhone
-public var crosshairSize: CGFloat = 50; // Crosshair size - square - even x and y dimensions
+public var maxNotch: CGFloat = 35 // Maximum thickness of the notch area on an iPhone
+public var crosshairSize: CGFloat = 50 // Crosshair size - square - even x and y dimensions
 public var ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
 public var screenWidth = UIScreen.main.bounds.width - maxNotch // Overall screen width - not including notch
 public var screenHeight = UIScreen.main.bounds.height
@@ -19,7 +19,8 @@ public var birdSize: CGFloat = (screenHeight-30)/5
 var bird = UIImageView(image:nil)
 var shotBall = UIImageView(image: nil)
 var shotBalls = [UIDynamicItem]() // Delaration of an array to store UIDynamicItem objects
-//var birds = [UIDynamicItem]()
+var obstacleArray = [UIImageView]()
+let scoreLabel = UILabel()
 
 public var crosshairVectorXY = CGPoint(x:0,y:0)
 
@@ -52,7 +53,6 @@ class ViewController: UIViewController, ballViewDelegate {
         bird.frame = CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize)
         bird.backgroundColor = UIColor.red
         self.view.addSubview(bird)
-
 
         //birds.append(bird)
 
@@ -96,7 +96,14 @@ class ViewController: UIViewController, ballViewDelegate {
         dynamicAnimator.addBehavior(gravityBehavior) // Add gravity to animator
 
         /* Collision Behaviour */
-        collisionBehavior = UICollisionBehavior(items: [shotBall, bird])
+        collisionBehavior = UICollisionBehavior(items: [shotBall])
+        collisionBehavior.action = {
+            if shotBall.frame.intersects(bird.frame) {
+                bird.isHidden = true
+                self.increaseScore(score: 10)
+                
+            }
+        }
         
         // Collision Boundaries - left, top and bottom sides of the screen
         self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:0, y:screenHeight))
@@ -106,21 +113,35 @@ class ViewController: UIViewController, ballViewDelegate {
         dynamicAnimator.addBehavior(collisionBehavior) // Add collision to animator
     }
     
+    func initialiseScoreLabel(score:Int) {
+        scoreLabel.frame = CGRect(x:maxNotch, y:10, width:100, height:20)
+        scoreLabel.textAlignment = NSTextAlignment.left
+        scoreLabel.text = "Score: \(score)"
+        self.view.addSubview(scoreLabel)
+        
+    }
+    
+    func increaseScore(score:Int) {
+        var total = 0
+        total += score
+        scoreLabel.text = "Score: \(total)"
+    }
+    
     /* Intialise and setup */
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         /* Passes the main view to dynamics as the reference view */
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         addBird()
         crosshairImageView.myBallDelegate = self
-        
+    
         /* Orientation Initialisation */
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         
 
         initialiseCrosshair()
+        initialiseScoreLabel(score:0)
 
     }
     
