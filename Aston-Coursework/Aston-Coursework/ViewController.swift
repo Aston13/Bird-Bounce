@@ -43,6 +43,7 @@ class ViewController: UIViewController, ballViewDelegate {
     /* Ball storage */
     var shotBall = UIImageView(image: nil)
     var shotBalls = [UIImageView]()
+    var boxes = [UIImageView]()
 
     /* Bird storage */
     var bird = UIImageView(image:nil)
@@ -66,6 +67,7 @@ class ViewController: UIViewController, ballViewDelegate {
     @IBAction func nextLevelButtonPressed(_ sender: Any) {
         nextLevelButton.isHidden = true
         increaseLevel()
+        
     }
     @IBOutlet weak var crosshairImageView: DragImageView! // Crosshair image outlet reference
     
@@ -91,10 +93,12 @@ class ViewController: UIViewController, ballViewDelegate {
         /* Orientation Initialisation */
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
-        
+
         crosshairImageView.myBallDelegate = self
         initialiseUI()
+
     }
+    
     
     func gameOver(){
         if (gameInProgress){
@@ -137,13 +141,57 @@ class ViewController: UIViewController, ballViewDelegate {
             gameTime = 40
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
+            vc.addRandomObstacle()
+
         } else if levelNum == 3 {
             goalScore = 5
             gameTime = 50
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
+            vc.addRandomObstacle()
+            vc.addRandomObstacle()
         }
+        
+
     }
+    
+    func addRandomObstacle() {
+        let obstacle = UIImageView(image: nil)
+        let rangeXMin: Int = Int(screenWidth/4)
+        let randomWH: Int = Int.random(in: 20...150)
+        let rangeXMax: Int = Int(screenWidth)-(randomWH*2)
+        let rangeYMax: Int = Int(screenHeight)-randomWH
+        let randomY: Int = Int.random(in: 25...rangeYMax)
+        let randomX: Int = Int.random(in: rangeXMin...rangeXMax)
+        
+        obstacle.frame = CGRect(x:randomX,y:randomY,width:randomWH,height:randomWH)
+        obstacle.backgroundColor = UIColor.red
+        self.view.addSubview(obstacle)
+        shotBalls.append(obstacle)
+        
+        dynamicBehavior = UIDynamicItemBehavior(items: [obstacle])
+        self.dynamicBehavior.isAnchored = true
+        dynamicAnimator.addBehavior(dynamicBehavior)    // Add dynamicItem to animator
+
+        /* Collision Behaviour */
+        collisionBehavior = UICollisionBehavior(items: [obstacle])
+        dynamicAnimator.addBehavior(collisionBehavior)  // Add collision to animator
+        
+//        let box = UIImageView(image: nil)
+//        box.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
+//        box.backgroundColor = UIColor.blue
+//        self.view.addSubview(box)
+//        shotBalls.append(box)
+//
+//        dynamicBehavior = UIDynamicItemBehavior(items: [box])
+//        self.dynamicBehavior.isAnchored = true
+//        dynamicAnimator.addBehavior(dynamicBehavior)    // Add dynamicItem to animator
+//
+//        /* Collision Behaviour */
+//        collisionBehavior = UICollisionBehavior(items: [box])
+//        dynamicAnimator.addBehavior(collisionBehavior)  // Add collision to animator
+    }
+    
     /* Function to force orientation to landscape. */
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscape
@@ -255,7 +303,9 @@ class ViewController: UIViewController, ballViewDelegate {
         shotBall.image = UIImage(named: "ball.png")
         shotBall.frame = CGRect(x: maxNotch, y: (screenHeight/2 - crosshairSize/2), width: ballSize, height: ballSize)
         self.view.addSubview(shotBall)
-        shotBalls.append(shotBall) // Add newly created ball to shotBalls[] array
+        //shotBalls.append(shotBall) // Add newly created ball to shotBalls[] array
+        
+        shotBalls.insert(shotBall, at: 0)
         
         /* Behaviours */
 
@@ -297,15 +347,17 @@ class ViewController: UIViewController, ballViewDelegate {
         
         /* Despawn balls after 5 seconds - prevents memory leak. */
         _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block:{_ in
-            if self.shotBalls.isEmpty == false {
+            if self.shotBalls.count > 25 {
                 self.shotBalls[0].removeFromSuperview()
                 self.shotBalls.removeFirst()
             }
         })
         
         /* Collision Boundaries - left, top and bottom sides of the screen. */
+
         self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:0, y:screenHeight))
         self.collisionBehavior.addBoundary(withIdentifier: "topBoundary" as NSCopying, from: CGPoint(x:0, y:25), to: CGPoint(x: screenWidth + maxNotch, y: 25))
         self.collisionBehavior.addBoundary(withIdentifier: "bottomBoundary" as NSCopying, from: CGPoint(x:0, y:screenHeight), to: CGPoint(x: screenWidth + maxNotch, y: screenHeight))
+        
     }
 }
