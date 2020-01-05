@@ -64,6 +64,7 @@ class ViewController: UIViewController, ballViewDelegate {
     
     @IBOutlet weak var nextLevelButton: UIButton!
     @IBAction func nextLevelButtonPressed(_ sender: Any) {
+        nextLevelButton.isHidden = true
         increaseLevel()
     }
     @IBOutlet weak var crosshairImageView: DragImageView! // Crosshair image outlet reference
@@ -71,7 +72,6 @@ class ViewController: UIViewController, ballViewDelegate {
     /* Setup */
     override func viewDidLoad() {
         super.viewDidLoad()
-        nextLevelButton.isHidden = true
         /* Passes the main view to dynamics as the reference view. */
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         
@@ -93,7 +93,6 @@ class ViewController: UIViewController, ballViewDelegate {
         UIDevice.current.setValue(value, forKey: "orientation")
         
         crosshairImageView.myBallDelegate = self
-        initialiseCrosshair()
         initialiseUI()
     }
     
@@ -102,6 +101,11 @@ class ViewController: UIViewController, ballViewDelegate {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "endGame") as! EndViewController
             self.present(vc, animated: false, completion: nil)
         }
+    }
+    
+    func gameWon(){
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "completeGame") as! CompleteViewController
+        self.present(vc, animated: false, completion: nil)
     }
     
     func levelWon(){
@@ -138,8 +142,6 @@ class ViewController: UIViewController, ballViewDelegate {
             gameTime = 50
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
-        } else {
-            gameOver() // game won
         }
     }
     /* Function to force orientation to landscape. */
@@ -159,6 +161,8 @@ class ViewController: UIViewController, ballViewDelegate {
         uiBar.frame = CGRect(x:0, y:0, width: uiBarWidth, height: 25)
         uiBar.backgroundColor = UIColor.systemGray
         self.view.addSubview(uiBar)
+        
+        initialiseCrosshair()
         initialiseScoreLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
         initialiseTimeLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
         initialiseLevelLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
@@ -196,7 +200,11 @@ class ViewController: UIViewController, ballViewDelegate {
         totalScore = totalScore + score
         scoreLabel.text = "Score: \(totalScore)/\(goalScore)"
         if Int(totalScore) == Int(goalScore) {
-            levelWon() // nextLevel
+            if levelNum == 3 {
+                gameWon()   // Game complete
+            } else {
+                levelWon()  // Next level
+            }
         }
     }
     
@@ -275,8 +283,12 @@ class ViewController: UIViewController, ballViewDelegate {
                         let postSubviewAmount = self.view.subviews.count
                         
                         if (preSubviewAmount != postSubviewAmount){
-                            self.birdPositions[Int(itemB.tag)] = 0
                             self.increaseScore(score: 1)
+
+                            /* 1 second timer set so that a bird cannot respawn in the same place instantly */
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                self.birdPositions[Int(itemB.tag)] = 0
+                            }
                         }
                     }
                 }
