@@ -15,16 +15,19 @@ var screenWidth = UIScreen.main.bounds.width - maxNotch // Overall screen width 
 var screenHeight = UIScreen.main.bounds.height
 let crosshairSize: CGFloat = 50 // Crosshair size - square - even x and y dimensions
 var crosshairVectorXY = CGPoint(x:0,y:0) // Vector used to store and retrieve the angle of the shot fired
-let birdSize: CGFloat = (screenHeight-30)/5
+let birdSize: CGFloat = (screenHeight-55)/5
 let ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
+
+var gameTime: TimeInterval = 30
+var goalScore: Int = 3
 
 /* 5 possible bird co-ordinate positions TR -> BR */
 let positionsArray: [CGRect] = [
-    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 5, width: birdSize, height: birdSize),
-    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 10 + birdSize, width: birdSize, height: birdSize),
-    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 15 + (birdSize*2), width: birdSize, height: birdSize),
-    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 20 + (birdSize*3), width: birdSize, height: birdSize),
-    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 25 + (birdSize*4), width: birdSize, height: birdSize)]
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 30, width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 35 + birdSize, width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 40 + (birdSize*2), width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 45 + (birdSize*3), width: birdSize, height: birdSize),
+    CGRect(x:(screenWidth - maxNotch) - (birdSize/2 + 5), y: 50 + (birdSize*4), width: birdSize, height: birdSize)]
 
 /* Protocols for delegated functions */
 protocol ballViewDelegate {
@@ -43,8 +46,10 @@ class ViewController: UIViewController, ballViewDelegate {
     var birdPositions: [Int] = [0,0,0,0,0] // Bird position slots TR -> BR. 0 = Empty. 1 = Occupied.
     
     /* UI */
+    var uiBar = UIView()
     let scoreLabel = UILabel()
     var totalScore: Int = 0
+    let timeLabel = UILabel()
     
     /* Behavioural variables */
     var dynamicAnimator: UIDynamicAnimator! // Physics Engine
@@ -64,10 +69,11 @@ class ViewController: UIViewController, ballViewDelegate {
         /* Checks every x seconds and adds a random bird to a random empty slot. */
         _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block:{_ in
             self.checkEmptyBirdPositions()
+            self.updateTimeLabel()
         })
         
-        
-        _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block:{_ in
+        /* Timer until game is over */
+        _ = Timer.scheduledTimer(withTimeInterval: gameTime, repeats: false, block:{_ in
             self.gameOver()
         })
         
@@ -77,13 +83,27 @@ class ViewController: UIViewController, ballViewDelegate {
         
         crosshairImageView.myBallDelegate = self
         initialiseCrosshair()
-        initialiseScoreLabel()
+        initialiseUI()
     }
     
     func gameOver(){
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "endGame") as! EndViewController
-        
         self.present(vc, animated: false, completion: nil)
+    }
+    
+    func levelWon(){
+        //gameOver()
+        let nextLevelButton = UIButton()
+        nextLevelButton.setTitle("Level 2", for: .normal)
+        nextLevelButton.backgroundColor = UIColor.red
+        nextLevelButton.frame = CGRect(x: (screenWidth/2) - maxNotch, y: (screenHeight-25)/2, width: 100, height: 25)
+        self.view.addSubview(nextLevelButton)
+
+        if nextLevelButton.is {
+            gameOver()
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Main") as! ViewController
+            self.present(vc, animated: false, completion: nil)
+        }
     }
     
     /* Function to force orientation to landscape. */
@@ -96,16 +116,54 @@ class ViewController: UIViewController, ballViewDelegate {
         return true
     }
     
-    func initialiseScoreLabel() {
-        scoreLabel.frame = CGRect(x:maxNotch, y:10, width:100, height:20)
+    func initialiseUI(){
+        let uiBarWidth: CGFloat = (screenWidth + maxNotch)
+        let uiBarItemAmount: CGFloat = 3;
+        
+        uiBar.frame = CGRect(x:0, y:0, width: uiBarWidth, height: 25)
+        uiBar.backgroundColor = UIColor.systemGray
+        self.view.addSubview(uiBar)
+        initialiseScoreLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
+        initialiseTimeLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
+        initialiseLevelLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
+        
+        //initialise birdsRemaining
+        //initialise timeLeft
+    }
+    
+    func initialiseScoreLabel(scaledWidth: CGFloat, amount: CGFloat) {
+        scoreLabel.frame = CGRect(x:maxNotch, y: 0, width: scaledWidth/amount, height: 25)
         scoreLabel.textAlignment = NSTextAlignment.left
-        scoreLabel.text = "Score: \(totalScore)"
+        scoreLabel.text = "Score: \(totalScore)/\(goalScore)"
         self.view.addSubview(scoreLabel)
+    }
+    
+    func initialiseTimeLabel(scaledWidth: CGFloat, amount: CGFloat){
+        timeLabel.frame = CGRect(x:maxNotch + (screenWidth/3), y: 0, width: (scaledWidth/amount)*2, height: 25)
+        timeLabel.textAlignment = NSTextAlignment.left
+        timeLabel.text = "Time Remaining: \(Int(gameTime))"
+        self.view.addSubview(timeLabel)
+    }
+    
+    func initialiseLevelLabel(scaledWidth: CGFloat, amount: CGFloat){
+        let levelLabel = UILabel()
+        levelLabel.frame = CGRect(x:maxNotch + (screenWidth/3)*2, y: 0, width: (scaledWidth/amount)*3, height: 25)
+        levelLabel.textAlignment = NSTextAlignment.left
+        levelLabel.text = "Level: "
+        self.view.addSubview(levelLabel)
+    }
+    
+    func updateTimeLabel(){
+        gameTime = gameTime - 1
+        timeLabel.text = "Time Remaining: \(Int(gameTime))"
     }
     
     func increaseScore(score:Int) {
         totalScore = totalScore + score
-        scoreLabel.text = "Score: \(totalScore)"
+        scoreLabel.text = "Score: \(totalScore)/\(goalScore)"
+        if Int(totalScore) == Int(goalScore) {
+            levelWon() // nextLevel
+        }
     }
     
     /* Function to setup and add a crosshair to the subview with an image,
@@ -201,7 +259,7 @@ class ViewController: UIViewController, ballViewDelegate {
         
         /* Collision Boundaries - left, top and bottom sides of the screen. */
         self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:0, y:screenHeight))
-        self.collisionBehavior.addBoundary(withIdentifier: "topBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x: screenWidth + maxNotch, y: 0))
+        self.collisionBehavior.addBoundary(withIdentifier: "topBoundary" as NSCopying, from: CGPoint(x:0, y:25), to: CGPoint(x: screenWidth + maxNotch, y: 25))
         self.collisionBehavior.addBoundary(withIdentifier: "bottomBoundary" as NSCopying, from: CGPoint(x:0, y:screenHeight), to: CGPoint(x: screenWidth + maxNotch, y: screenHeight))
     }
 }
