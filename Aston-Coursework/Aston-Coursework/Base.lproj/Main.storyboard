@@ -47,12 +47,21 @@
                                 <rect key="frame" x="20" y="162" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rpf-tf-f69">
+                                <rect key="frame" x="297" y="172" width="72" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Next Level"/>
+                                <connections>
+                                    <action selector="nextLevelButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zbj-oi-EBX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="crosshairImageView" destination="bjK-6e-M5m" id="UII-EF-QSm"/>
+                        <outlet property="nextLevelButton" destination="rpf-tf-f69" id="8no-kE-IWN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

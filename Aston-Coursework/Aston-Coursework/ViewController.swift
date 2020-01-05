@@ -20,6 +20,10 @@ let ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
 
 var gameTime: TimeInterval = 30
 var goalScore: Int = 3
+var gameInProgress: Bool = true;
+var levelNum = 1
+var birdTimer: Timer?
+var gameTimer: Timer?
 
 /* 5 possible bird co-ordinate positions TR -> BR */
 let positionsArray: [CGRect] = [
@@ -57,23 +61,30 @@ class ViewController: UIViewController, ballViewDelegate {
     var collisionBehavior: UICollisionBehavior!
     var gravityBehavior: UIGravityBehavior!
 
+    
+    @IBOutlet weak var nextLevelButton: UIButton!
+    @IBAction func nextLevelButtonPressed(_ sender: Any) {
+        increaseLevel()
+    }
     @IBOutlet weak var crosshairImageView: DragImageView! // Crosshair image outlet reference
     
     /* Setup */
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        nextLevelButton.isHidden = true
         /* Passes the main view to dynamics as the reference view. */
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         
         /* Checks every x seconds and adds a random bird to a random empty slot. */
-        _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block:{_ in
-            self.checkEmptyBirdPositions()
-            self.updateTimeLabel()
+        birdTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block:{_ in
+            if (gameInProgress) {
+                self.checkEmptyBirdPositions()
+                self.updateTimeLabel()
+            }
         })
         
         /* Timer until game is over */
-        _ = Timer.scheduledTimer(withTimeInterval: gameTime, repeats: false, block:{_ in
+        gameTimer = Timer.scheduledTimer(withTimeInterval: gameTime, repeats: false, block:{_ in
             self.gameOver()
         })
         
@@ -87,25 +98,50 @@ class ViewController: UIViewController, ballViewDelegate {
     }
     
     func gameOver(){
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "endGame") as! EndViewController
-        self.present(vc, animated: false, completion: nil)
-    }
-    
-    func levelWon(){
-        //gameOver()
-        let nextLevelButton = UIButton()
-        nextLevelButton.setTitle("Level 2", for: .normal)
-        nextLevelButton.backgroundColor = UIColor.red
-        nextLevelButton.frame = CGRect(x: (screenWidth/2) - maxNotch, y: (screenHeight-25)/2, width: 100, height: 25)
-        self.view.addSubview(nextLevelButton)
-
-        if nextLevelButton.is {
-            gameOver()
-            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Main") as! ViewController
+        if (gameInProgress){
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "endGame") as! EndViewController
             self.present(vc, animated: false, completion: nil)
         }
     }
     
+    func levelWon(){
+        let nextLevelScreen = UIView()
+        nextLevelScreen.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
+        nextLevelScreen.backgroundColor = UIColor.yellow
+        
+        gameInProgress = false
+        
+        self.view.addSubview(nextLevelScreen)
+        nextLevelButton.isHidden = false
+        self.view.bringSubviewToFront(nextLevelButton)
+        
+    }
+    
+    func increaseLevel(){
+        
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Main") as! ViewController
+        
+        /* Reset Game Variables */
+        totalScore = 0
+        levelNum = levelNum + 1
+        birdTimer?.invalidate()
+        gameTimer?.invalidate()
+        
+        
+        if levelNum == 2 {
+            goalScore = 4
+            gameTime = 40
+            self.present(vc, animated: false, completion: nil)
+            gameInProgress = true
+        } else if levelNum == 3 {
+            goalScore = 5
+            gameTime = 50
+            self.present(vc, animated: false, completion: nil)
+            gameInProgress = true
+        } else {
+            gameOver() // game won
+        }
+    }
     /* Function to force orientation to landscape. */
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .landscape
@@ -126,9 +162,7 @@ class ViewController: UIViewController, ballViewDelegate {
         initialiseScoreLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
         initialiseTimeLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
         initialiseLevelLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
-        
-        //initialise birdsRemaining
-        //initialise timeLeft
+
     }
     
     func initialiseScoreLabel(scaledWidth: CGFloat, amount: CGFloat) {
@@ -149,7 +183,7 @@ class ViewController: UIViewController, ballViewDelegate {
         let levelLabel = UILabel()
         levelLabel.frame = CGRect(x:maxNotch + (screenWidth/3)*2, y: 0, width: (scaledWidth/amount)*3, height: 25)
         levelLabel.textAlignment = NSTextAlignment.left
-        levelLabel.text = "Level: "
+        levelLabel.text = "Level: \(levelNum)"
         self.view.addSubview(levelLabel)
     }
     
