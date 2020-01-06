@@ -15,7 +15,6 @@ class EndViewController: UIViewController {
     @IBOutlet weak var replayButton: UIButton!
     @IBAction func replayButtonPressed(_ sender: Any) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "Main") as! ViewController
-        vc.dismiss(animated: false, completion: nil)
         vc.selectLevel(level: 1)
         self.present(vc, animated: false, completion: nil)
     }
@@ -25,6 +24,7 @@ class EndViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initialiseUI()
+        playLostSound()
 
         // Orientation initialisation
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
@@ -54,13 +54,13 @@ class EndViewController: UIViewController {
     }
     
     func initialiseReplayButton(){
-        replayButton.backgroundColor = UIColor.systemPink
+        replayButton.backgroundColor = UIColor.systemRed
         replayButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
         replayButton.center.x = gameOverUI.center.x
     }
     
     func initialiseMainMenuButton(){
-        mainMenuButton.backgroundColor = UIColor.systemPink
+        mainMenuButton.backgroundColor = UIColor.systemOrange
         mainMenuButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
         mainMenuButton.center.x = gameOverUI.center.x
     }

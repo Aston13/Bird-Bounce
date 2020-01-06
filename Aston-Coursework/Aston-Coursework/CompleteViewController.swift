@@ -15,19 +15,17 @@ class CompleteViewController: UIViewController {
     @IBOutlet weak var replayButton: UIButton!
     @IBAction func replayButtonPressed(_ sender: Any) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "Main") as! ViewController
-        vc.dismiss(animated: false, completion: nil)
         vc.selectLevel(level: 1)
         self.present(vc, animated: false, completion: nil)
     }
-    
-    
-    
+
     let completeUI = UIImageView(image: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         initialiseUI()
-        
+        playWinSound()
+    
         // Orientation initialisation
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
@@ -55,13 +53,13 @@ class CompleteViewController: UIViewController {
     }
     
     func initialiseReplayButton(){
-        replayButton.backgroundColor = UIColor.systemPink
+        replayButton.backgroundColor = UIColor.systemYellow
         replayButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
         replayButton.center.x = completeUI.center.x
     }
     
     func initialiseMainMenuButton(){
-        mainMenuButton.backgroundColor = UIColor.systemPink
+        mainMenuButton.backgroundColor = UIColor.systemYellow
         mainMenuButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
         mainMenuButton.center.x = completeUI.center.x
     }

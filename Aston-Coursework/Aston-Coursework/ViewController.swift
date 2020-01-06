@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 /* Global variables */
 /* Dimensions */
@@ -47,6 +48,7 @@ class ViewController: UIViewController, ballViewDelegate {
     /* Interface Builder: Outlets/Actions */
     @IBOutlet weak var nextLevelButton: UIButton!
     @IBAction func nextLevelButtonPressed(_ sender: Any) {
+        gameItems.removeAll()
         nextLevelButton.isHidden = true
         selectLevel(level: levelNum+1)
     }
@@ -98,7 +100,7 @@ class ViewController: UIViewController, ballViewDelegate {
         // Orientation initialisation
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
-
+        
         crosshairImageView.myBallDelegate = self
         initialiseUI()
     }
@@ -107,12 +109,14 @@ class ViewController: UIViewController, ballViewDelegate {
         
         // gameInProgress check ensures that the game isn't paused or in a transition screen
         if (gameInProgress) {
+            gameItems.removeAll()
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "endGame") as! EndViewController
             self.present(vc, animated: false, completion: nil)
         }
     }
     
     func gameWon() {
+        gameItems.removeAll()
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "completeGame") as! CompleteViewController
         self.present(vc, animated: false, completion: nil)
     }
@@ -180,7 +184,8 @@ class ViewController: UIViewController, ballViewDelegate {
         
         // Create obstacle
         obstacle.frame = CGRect(x:randomX,y:randomY,width:randomWH,height:randomWH)
-        obstacle.backgroundColor = UIColor.red
+        obstacle.image = UIImage(named: "brickWall.png")
+        //obstacle.backgroundColor = UIColor.red
         self.view.addSubview(obstacle)
         gameItems.append(obstacle)
         
@@ -206,6 +211,14 @@ class ViewController: UIViewController, ballViewDelegate {
     func initialiseUI() {
         let uiBarWidth: CGFloat = (screenWidth + maxNotch)
         let uiBarItemAmount: CGFloat = 3;
+        let backgroundFrame = UIImageView(image: nil)
+        backgroundFrame.frame = CGRect(x:0, y:0, width: screenWidth + maxNotch, height: screenHeight)
+        backgroundFrame.image = (UIImage(named: "candyBackground"))
+        self.view.addSubview(backgroundFrame)
+        self.view.sendSubviewToBack(backgroundFrame)
+        
+        
+        
         
         uiBar.frame = CGRect(x:0, y:0, width: uiBarWidth, height: 25)
         uiBar.backgroundColor = UIColor.systemGray
@@ -308,7 +321,8 @@ class ViewController: UIViewController, ballViewDelegate {
         
         // Create a ball and add it to the subview
         shotBall = UIImageView(image: nil)
-        shotBall.image = UIImage(named: "ball.png")
+        //shotBall.image = UIImage(named: "ball.png")
+        shotBall.image = UIImage(named: "ninjaStar.png")
         shotBall.frame = CGRect(x: maxNotch, y: (screenHeight/2 - crosshairSize/2), width: ballSize, height: ballSize)
         self.view.addSubview(shotBall)
         gameItems.insert(shotBall, at: 0)
@@ -318,6 +332,7 @@ class ViewController: UIViewController, ballViewDelegate {
         dynamicBehavior = UIDynamicItemBehavior(items: [shotBall])
         self.dynamicBehavior.addLinearVelocity(CGPoint(x:crosshairVectorXY.x, y:crosshairVectorXY.y), for: shotBall)      // Speed and direction
         dynamicAnimator.addBehavior(dynamicBehavior)    // Add dynamicItem to animator
+        
 
         gravityBehavior = UIGravityBehavior(items: gameItems)
         self.gravityBehavior.magnitude = 0.2            // Gravitational force
@@ -333,11 +348,15 @@ class ViewController: UIViewController, ballViewDelegate {
                 for itemB in self.birds {
                     if itemA.frame.intersects(itemB.frame) {
                         let preSubviewAmount = self.view.subviews.count
-                        itemB.removeFromSuperview()
+                        itemB.removeFromSuperview() // Dead bird
+                        
+                        
                         let postSubviewAmount = self.view.subviews.count
                         
                         if (preSubviewAmount != postSubviewAmount) {
                             self.increaseScore(score: 1)
+                            playVibrate()
+                            playDeathSound()
 
                             // 2 second timer set so that a bird cannot respawn in the same place instantly
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -365,4 +384,5 @@ class ViewController: UIViewController, ballViewDelegate {
         self.collisionBehavior.addBoundary(withIdentifier: "bottomBoundary" as NSCopying, from: CGPoint(x:0, y:screenHeight), to: CGPoint(x: screenWidth + maxNotch, y: screenHeight))
         
     }
+    
 }

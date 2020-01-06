@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class DragImageView: UIImageView {
     
@@ -14,6 +15,7 @@ class DragImageView: UIImageView {
     var spawnPoint = CGPoint(x: maxNotch + crosshairSize/2,y: screenHeight/2)
     var myBallDelegate: ballViewDelegate?
     var startLocation: CGPoint? // Starting location used by touchesMoved()
+    let impact = UIImpactFeedbackGenerator()
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         startLocation = touches.first?.location(in: self)
@@ -36,8 +38,8 @@ class DragImageView: UIImageView {
         let halfy = self.bounds.midY // Half the height of the crosshair image
         newCenter.y = min(screenHeight * 0.70 - halfy, newCenter.y) // Bottom boundary
         newCenter.y = max(screenHeight * 0.30 + halfy, newCenter.y) // Top boundary
-        
         self.center = newCenter
+
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -49,6 +51,10 @@ class DragImageView: UIImageView {
         crosshairVectorXY.y = (self.center.y - spawnPoint.y) * 10
         
         self.center = spawnPoint // Reset crosshair to original position
+        
+        
         self.myBallDelegate?.shoot() // Call the shoot function
+        AudioServicesPlaySystemSound(1520)
+        playShotSound()
     }
 }

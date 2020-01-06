@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8141B99C23C3BDA5008BEB69 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141B99B23C3BDA5008BEB69 /* AudioController.swift */; };
+		8141B99E23C3BE51008BEB69 /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141B99D23C3BE51008BEB69 /* AnimationController.swift */; };
+		8141B9A423C3C383008BEB69 /* deadbird.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9A323C3C383008BEB69 /* deadbird.wav */; };
+		8141B9A623C3CDEE008BEB69 /* boing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9A523C3CDEE008BEB69 /* boing.wav */; };
+		8141B9A823C3CF43008BEB69 /* win.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9A723C3CF43008BEB69 /* win.mp3 */; };
+		8141B9AA23C3DAFD008BEB69 /* loss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9A923C3DAFD008BEB69 /* loss.wav */; };
+		8141B9AC23C3E29A008BEB69 /* shot.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9AB23C3E29A008BEB69 /* shot.wav */; };
+		8141B9AE23C3E39F008BEB69 /* menu.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9AD23C3E39F008BEB69 /* menu.wav */; };
+		8141B9B023C3EA61008BEB69 /* candyBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9AF23C3EA61008BEB69 /* candyBackground.png */; };
+		8141B9B423C3EDA6008BEB69 /* ninjaStar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9B323C3EDA6008BEB69 /* ninjaStar.png */; };
+		8141B9B623C3EFAF008BEB69 /* brickWall.png in Resources */ = {isa = PBXBuildFile; fileRef = 8141B9B523C3EFAF008BEB69 /* brickWall.png */; };
 		8171E1BD23C1551600CBEA44 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171E1BC23C1551600CBEA44 /* MenuViewController.swift */; };
 		8171E1BF23C158FA00CBEA44 /* EndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8171E1BE23C158FA00CBEA44 /* EndViewController.swift */; };
 		817A71AA23C2433600BD3FA9 /* CompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817A71A923C2433600BD3FA9 /* CompleteViewController.swift */; };
@@ -39,6 +50,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8141B99B23C3BDA5008BEB69 /* AudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
+		8141B99D23C3BE51008BEB69 /* AnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
+		8141B9A323C3C383008BEB69 /* deadbird.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = deadbird.wav; sourceTree = "<group>"; };
+		8141B9A523C3CDEE008BEB69 /* boing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = boing.wav; sourceTree = "<group>"; };
+		8141B9A723C3CF43008BEB69 /* win.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = win.mp3; sourceTree = "<group>"; };
+		8141B9A923C3DAFD008BEB69 /* loss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = loss.wav; sourceTree = "<group>"; };
+		8141B9AB23C3E29A008BEB69 /* shot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = shot.wav; sourceTree = "<group>"; };
+		8141B9AD23C3E39F008BEB69 /* menu.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = menu.wav; sourceTree = "<group>"; };
+		8141B9AF23C3EA61008BEB69 /* candyBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = candyBackground.png; path = Assets.xcassets/candyBackground.png; sourceTree = "<group>"; };
+		8141B9B323C3EDA6008BEB69 /* ninjaStar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ninjaStar.png; path = Assets.xcassets/ninjaStar.png; sourceTree = "<group>"; };
+		8141B9B523C3EFAF008BEB69 /* brickWall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = brickWall.png; path = Assets.xcassets/brickWall.png; sourceTree = "<group>"; };
 		8171E1BC23C1551600CBEA44 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		8171E1BE23C158FA00CBEA44 /* EndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndViewController.swift; sourceTree = "<group>"; };
 		817A71A923C2433600BD3FA9 /* CompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteViewController.swift; sourceTree = "<group>"; };
@@ -111,13 +133,24 @@
 				D9526E45239E8E5D003B281C /* SceneDelegate.swift */,
 				8171E1BC23C1551600CBEA44 /* MenuViewController.swift */,
 				D9526E47239E8E5D003B281C /* ViewController.swift */,
+				8141B9B523C3EFAF008BEB69 /* brickWall.png */,
 				8171E1BE23C158FA00CBEA44 /* EndViewController.swift */,
 				817A71A923C2433600BD3FA9 /* CompleteViewController.swift */,
 				81E4E42023BE3778003F12D9 /* DragImageView.swift */,
 				D9526E49239E8E5D003B281C /* Main.storyboard */,
 				D9526E4C239E8E5D003B281C /* Assets.xcassets */,
+				8141B9B323C3EDA6008BEB69 /* ninjaStar.png */,
+				8141B9AF23C3EA61008BEB69 /* candyBackground.png */,
 				D9526E4E239E8E5D003B281C /* LaunchScreen.storyboard */,
 				D9526E51239E8E5D003B281C /* Info.plist */,
+				8141B99B23C3BDA5008BEB69 /* AudioController.swift */,
+				8141B9A323C3C383008BEB69 /* deadbird.wav */,
+				8141B9A923C3DAFD008BEB69 /* loss.wav */,
+				8141B9A523C3CDEE008BEB69 /* boing.wav */,
+				8141B9A723C3CF43008BEB69 /* win.mp3 */,
+				8141B9AB23C3E29A008BEB69 /* shot.wav */,
+				8141B9AD23C3E39F008BEB69 /* menu.wav */,
+				8141B99D23C3BE51008BEB69 /* AnimationController.swift */,
 			);
 			path = "Aston-Coursework";
 			sourceTree = "<group>";
@@ -244,8 +277,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8141B9A423C3C383008BEB69 /* deadbird.wav in Resources */,
+				8141B9B023C3EA61008BEB69 /* candyBackground.png in Resources */,
 				D9526E50239E8E5D003B281C /* LaunchScreen.storyboard in Resources */,
+				8141B9AC23C3E29A008BEB69 /* shot.wav in Resources */,
 				D9526E4D239E8E5D003B281C /* Assets.xcassets in Resources */,
+				8141B9AA23C3DAFD008BEB69 /* loss.wav in Resources */,
+				8141B9A823C3CF43008BEB69 /* win.mp3 in Resources */,
+				8141B9B623C3EFAF008BEB69 /* brickWall.png in Resources */,
+				8141B9AE23C3E39F008BEB69 /* menu.wav in Resources */,
+				8141B9B423C3EDA6008BEB69 /* ninjaStar.png in Resources */,
+				8141B9A623C3CDEE008BEB69 /* boing.wav in Resources */,
 				D9526E4B239E8E5D003B281C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,10 +314,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8171E1BF23C158FA00CBEA44 /* EndViewController.swift in Sources */,
+				8141B99C23C3BDA5008BEB69 /* AudioController.swift in Sources */,
 				D9526E48239E8E5D003B281C /* ViewController.swift in Sources */,
 				8171E1BD23C1551600CBEA44 /* MenuViewController.swift in Sources */,
 				D9526E44239E8E5D003B281C /* AppDelegate.swift in Sources */,
 				817A71AA23C2433600BD3FA9 /* CompleteViewController.swift in Sources */,
+				8141B99E23C3BE51008BEB69 /* AnimationController.swift in Sources */,
 				81E4E42123BE3778003F12D9 /* DragImageView.swift in Sources */,
 				D9526E46239E8E5D003B281C /* SceneDelegate.swift in Sources */,
 			);

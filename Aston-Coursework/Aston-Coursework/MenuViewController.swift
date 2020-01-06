@@ -14,6 +14,7 @@ class MenuViewController: UIViewController {
 
     @IBOutlet weak var playButton: UIButton!
     @IBAction func playButtonPressed(_ sender: Any) {
+        audioPlayer3?.stop()
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "Main") as! ViewController
         vc.dismiss(animated: false, completion: nil)
         vc.selectLevel(level: 1)
@@ -32,8 +33,10 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "Main") as! ViewController
+        vc.dismiss(animated: false, completion: nil)
         initialiseUI()
+        playMenuMusic()
         
         // Orientation initialisation
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
