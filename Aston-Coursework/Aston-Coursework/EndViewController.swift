@@ -9,22 +9,28 @@
 import UIKit
 
 class EndViewController: UIViewController {
-
+    
+    /* Interface Builder: Outlets/Actions */
+    @IBOutlet weak var mainMenuButton: UIButton!
+    @IBOutlet weak var replayButton: UIButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Orientation initialisation
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    /* Function to force orientation to landscape. */
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscape
     }
-    */
+    
+    /* Function to allow autorotate of orientation. */
+    override var shouldAutorotate: Bool {
+        return true
+    }
 
 }

@@ -10,7 +10,7 @@ import UIKit
 
 class DragImageView: UIImageView {
     
-    /* Original starting location used by touchesEnded() to reset crosshair */
+    // Original starting location used by touchesEnded() to reset crosshair
     var spawnPoint = CGPoint(x: maxNotch + crosshairSize/2,y: screenHeight/2)
     var myBallDelegate: ballViewDelegate?
     var startLocation: CGPoint? // Starting location used by touchesMoved()
@@ -29,7 +29,6 @@ class DragImageView: UIImageView {
         /* Restrict the movement bounds of the crosshair.
          * Comments are in perspective to the top-left corner of the screen (x0,y0).
          */
-
         let halfx = self.bounds.midX // Half the width of the crosshair image
         newCenter.x = max((maxNotch + halfx), newCenter.x) // Left boundary
         newCenter.x = min(screenWidth * 0.20 - halfx, newCenter.x) // Right boundary
@@ -39,10 +38,10 @@ class DragImageView: UIImageView {
         newCenter.y = max(screenHeight * 0.30 + halfy, newCenter.y) // Top boundary
         
         self.center = newCenter
-        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
         /* Update the x and y angle of the shot just taken.
          * Multiply each CGFloat by the desired speed for each axis (i.e * 10)
          */

@@ -10,21 +10,39 @@ import UIKit
 
 class CompleteViewController: UIViewController {
 
+    /* Interface Builder: Outlets/Actions */
+    @IBOutlet weak var mainMenuButton: UIButton!
+    
+//    let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Main") as! ViewController
+//    
+//    // Reset game variables
+//    totalScore = 0
+//    levelNum = levelNum + 1
+//    birdTimer?.invalidate()
+//    gameTimer?.invalidate()
+//    
+//    // Level selection
+//    if levelNum == 2 {
+//        goalScore = 4
+//        gameTime = 40
+//        self.present(vc, animated: false, completion: nil)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Orientation initialisation
+        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    /* Function to force orientation to landscape. */
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscape
     }
-    */
+    
+    /* Function to allow autorotate of orientation. */
+    override var shouldAutorotate: Bool {
+        return true
+    }
 
 }

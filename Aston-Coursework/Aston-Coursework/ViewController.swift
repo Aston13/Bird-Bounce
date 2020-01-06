@@ -22,7 +22,7 @@ let ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
 var gameTime: TimeInterval = 30
 var goalScore: Int = 3
 var gameInProgress: Bool = true;
-var levelNum = 1
+var levelNum = 0
 var birdTimer: Timer?
 var gameTimer: Timer?
 
@@ -69,7 +69,7 @@ class ViewController: UIViewController, ballViewDelegate {
     @IBOutlet weak var nextLevelButton: UIButton!
     @IBAction func nextLevelButtonPressed(_ sender: Any) {
         nextLevelButton.isHidden = true
-        increaseLevel()
+        selectLevel(level: levelNum+1)
     }
     @IBOutlet weak var crosshairImageView: DragImageView! // Crosshair image outlet reference
     
@@ -132,17 +132,22 @@ class ViewController: UIViewController, ballViewDelegate {
     /* Resets game state and loads new settings based on the level. Only three levels currently exist.
      * In future, a function could be made to automatically increase variables based on level number.
      */
-    func increaseLevel() {
+    func selectLevel(level: Int) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Main") as! ViewController
         
         // Reset game variables
         totalScore = 0
-        levelNum = levelNum + 1
+        levelNum = level
         birdTimer?.invalidate()
         gameTimer?.invalidate()
         
         // Level selection
-        if levelNum == 2 {
+        if levelNum == 1 {
+            goalScore = 3
+            gameTime = 30
+            self.present(vc, animated: false, completion: nil)
+            gameInProgress = true
+        } else if levelNum == 2 {
             goalScore = 4
             gameTime = 40
             self.present(vc, animated: false, completion: nil)
@@ -168,7 +173,7 @@ class ViewController: UIViewController, ballViewDelegate {
         /* Biggest size allowed per obstacle is half the screen size -ballSize*2,
          * to always allow enough space for a ball to pass between two obstacles
          */
-        let randomWH: Int = Int.random(in: (Int(screenHeight/2) - Int(ballSize*2))...(Int(screenHeight/2) - Int(ballSize*2)))
+        let randomWH: Int = Int.random(in: 40...(Int(screenHeight/2) - Int(ballSize*2)))
         let rangeXMax: Int = Int(screenWidth)-(randomWH*2)
         let rangeYMax: Int = Int(screenHeight)-randomWH
         let randomY: Int = Int.random(in: 25...rangeYMax)
@@ -327,8 +332,8 @@ class ViewController: UIViewController, ballViewDelegate {
                         if (preSubviewAmount != postSubviewAmount) {
                             self.increaseScore(score: 1)
 
-                            // 1 second timer set so that a bird cannot respawn in the same place instantly
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            // 2 second timer set so that a bird cannot respawn in the same place instantly
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                                 self.birdPositions[Int(itemB.tag)] = 0
                             }
                         }
