@@ -18,6 +18,7 @@ var crosshairVectorXY = CGPoint(x:0,y:0) // Vector used to store and retrieve th
 let birdSize: CGFloat = (screenHeight-55)/5
 let ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
 
+/* Time and game configurations */
 var gameTime: TimeInterval = 30
 var goalScore: Int = 3
 var gameInProgress: Bool = true;
@@ -38,12 +39,14 @@ protocol ballViewDelegate {
     func shoot()
 }
 
+/*
+ * ViewController Class Main
+ */
 class ViewController: UIViewController, ballViewDelegate {
     
-    /* Ball storage */
+    /* Game items storage */
     var shotBall = UIImageView(image: nil)
-    var shotBalls = [UIImageView]()
-    var boxes = [UIImageView]()
+    var gameItems = [UIImageView]() // Collection of ball and obtacle items
 
     /* Bird storage */
     var bird = UIImageView(image:nil)
@@ -62,57 +65,59 @@ class ViewController: UIViewController, ballViewDelegate {
     var collisionBehavior: UICollisionBehavior!
     var gravityBehavior: UIGravityBehavior!
 
-    
+    /* Interface Builder: Outlets/Actions */
     @IBOutlet weak var nextLevelButton: UIButton!
     @IBAction func nextLevelButtonPressed(_ sender: Any) {
         nextLevelButton.isHidden = true
         increaseLevel()
-        
     }
     @IBOutlet weak var crosshairImageView: DragImageView! // Crosshair image outlet reference
     
-    /* Setup */
+    /*
+     * Setup
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
-        /* Passes the main view to dynamics as the reference view. */
+        
+        // Passes the main view to dynamics as the reference view
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         
-        /* Checks every x seconds and adds a random bird to a random empty slot. */
-        birdTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block:{_ in
+        // Checks every x seconds and adds a random bird to a random empty slot
+        birdTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {_ in
             if (gameInProgress) {
                 self.checkEmptyBirdPositions()
                 self.updateTimeLabel()
             }
         })
         
-        /* Timer until game is over */
+        // Timer until game is over
         gameTimer = Timer.scheduledTimer(withTimeInterval: gameTime, repeats: false, block:{_ in
             self.gameOver()
         })
         
-        /* Orientation Initialisation */
+        // Orientation initialisation
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
 
         crosshairImageView.myBallDelegate = self
         initialiseUI()
-
     }
     
-    
-    func gameOver(){
-        if (gameInProgress){
+    func gameOver() {
+        
+        // gameInProgress check ensures that the game isn't paused or in a transition screen
+        if (gameInProgress) {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "endGame") as! EndViewController
             self.present(vc, animated: false, completion: nil)
         }
     }
     
-    func gameWon(){
+    func gameWon() {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "completeGame") as! CompleteViewController
         self.present(vc, animated: false, completion: nil)
     }
     
-    func levelWon(){
+    func levelWon() {
         let nextLevelScreen = UIView()
         nextLevelScreen.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
         nextLevelScreen.backgroundColor = UIColor.yellow
@@ -122,27 +127,27 @@ class ViewController: UIViewController, ballViewDelegate {
         self.view.addSubview(nextLevelScreen)
         nextLevelButton.isHidden = false
         self.view.bringSubviewToFront(nextLevelButton)
-        
     }
     
-    func increaseLevel(){
-        
+    /* Resets game state and loads new settings based on the level. Only three levels currently exist.
+     * In future, a function could be made to automatically increase variables based on level number.
+     */
+    func increaseLevel() {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "Main") as! ViewController
         
-        /* Reset Game Variables */
+        // Reset game variables
         totalScore = 0
         levelNum = levelNum + 1
         birdTimer?.invalidate()
         gameTimer?.invalidate()
         
-        
+        // Level selection
         if levelNum == 2 {
             goalScore = 4
             gameTime = 40
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
             vc.addRandomObstacle()
-
         } else if levelNum == 3 {
             goalScore = 5
             gameTime = 50
@@ -151,45 +156,37 @@ class ViewController: UIViewController, ballViewDelegate {
             vc.addRandomObstacle()
             vc.addRandomObstacle()
         }
-        
-
     }
     
+    /* Creates an obstacle of a random size and position (within a range),
+     * the obstacle is given behaviours and added to gameItems[] and the subview.
+     */
     func addRandomObstacle() {
         let obstacle = UIImageView(image: nil)
         let rangeXMin: Int = Int(screenWidth/4)
-        let randomWH: Int = Int.random(in: 20...150)
+        
+        /* Biggest size allowed per obstacle is half the screen size -ballSize*2,
+         * to always allow enough space for a ball to pass between two obstacles
+         */
+        let randomWH: Int = Int.random(in: (Int(screenHeight/2) - Int(ballSize*2))...(Int(screenHeight/2) - Int(ballSize*2)))
         let rangeXMax: Int = Int(screenWidth)-(randomWH*2)
         let rangeYMax: Int = Int(screenHeight)-randomWH
         let randomY: Int = Int.random(in: 25...rangeYMax)
         let randomX: Int = Int.random(in: rangeXMin...rangeXMax)
         
+        // Create obstacle
         obstacle.frame = CGRect(x:randomX,y:randomY,width:randomWH,height:randomWH)
         obstacle.backgroundColor = UIColor.red
         self.view.addSubview(obstacle)
-        shotBalls.append(obstacle)
+        gameItems.append(obstacle)
         
+        // Behaviours
         dynamicBehavior = UIDynamicItemBehavior(items: [obstacle])
-        self.dynamicBehavior.isAnchored = true
-        dynamicAnimator.addBehavior(dynamicBehavior)    // Add dynamicItem to animator
+        self.dynamicBehavior.isAnchored = true // Fixed position
+        dynamicAnimator.addBehavior(dynamicBehavior)
 
-        /* Collision Behaviour */
         collisionBehavior = UICollisionBehavior(items: [obstacle])
-        dynamicAnimator.addBehavior(collisionBehavior)  // Add collision to animator
-        
-//        let box = UIImageView(image: nil)
-//        box.frame = CGRect(x: 100, y: 100, width: 100, height: 100)
-//        box.backgroundColor = UIColor.blue
-//        self.view.addSubview(box)
-//        shotBalls.append(box)
-//
-//        dynamicBehavior = UIDynamicItemBehavior(items: [box])
-//        self.dynamicBehavior.isAnchored = true
-//        dynamicAnimator.addBehavior(dynamicBehavior)    // Add dynamicItem to animator
-//
-//        /* Collision Behaviour */
-//        collisionBehavior = UICollisionBehavior(items: [box])
-//        dynamicAnimator.addBehavior(collisionBehavior)  // Add collision to animator
+        dynamicAnimator.addBehavior(collisionBehavior) // Add collision to animator
     }
     
     /* Function to force orientation to landscape. */
@@ -202,7 +199,7 @@ class ViewController: UIViewController, ballViewDelegate {
         return true
     }
     
-    func initialiseUI(){
+    func initialiseUI() {
         let uiBarWidth: CGFloat = (screenWidth + maxNotch)
         let uiBarItemAmount: CGFloat = 3;
         
@@ -214,7 +211,6 @@ class ViewController: UIViewController, ballViewDelegate {
         initialiseScoreLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
         initialiseTimeLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
         initialiseLevelLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
-
     }
     
     func initialiseScoreLabel(scaledWidth: CGFloat, amount: CGFloat) {
@@ -224,14 +220,14 @@ class ViewController: UIViewController, ballViewDelegate {
         self.view.addSubview(scoreLabel)
     }
     
-    func initialiseTimeLabel(scaledWidth: CGFloat, amount: CGFloat){
+    func initialiseTimeLabel(scaledWidth: CGFloat, amount: CGFloat) {
         timeLabel.frame = CGRect(x:maxNotch + (screenWidth/3), y: 0, width: (scaledWidth/amount)*2, height: 25)
         timeLabel.textAlignment = NSTextAlignment.left
         timeLabel.text = "Time Remaining: \(Int(gameTime))"
         self.view.addSubview(timeLabel)
     }
     
-    func initialiseLevelLabel(scaledWidth: CGFloat, amount: CGFloat){
+    func initialiseLevelLabel(scaledWidth: CGFloat, amount: CGFloat) {
         let levelLabel = UILabel()
         levelLabel.frame = CGRect(x:maxNotch + (screenWidth/3)*2, y: 0, width: (scaledWidth/amount)*3, height: 25)
         levelLabel.textAlignment = NSTextAlignment.left
@@ -239,7 +235,7 @@ class ViewController: UIViewController, ballViewDelegate {
         self.view.addSubview(levelLabel)
     }
     
-    func updateTimeLabel(){
+    func updateTimeLabel() {
         gameTime = gameTime - 1
         timeLabel.text = "Time Remaining: \(Int(gameTime))"
     }
@@ -282,7 +278,7 @@ class ViewController: UIViewController, ballViewDelegate {
      */
     func addBird(position: CGRect, slotNum: Int) {
   
-        /* Create a new bird object */
+        // Create a new bird object
         bird = UIImageView(image: nil)
         
         // Loads a bird image at random from 1-12
@@ -298,44 +294,40 @@ class ViewController: UIViewController, ballViewDelegate {
      */
     func shoot() {
         
-        /* Create a ball and add it to the subview */
+        // Create a ball and add it to the subview
         shotBall = UIImageView(image: nil)
         shotBall.image = UIImage(named: "ball.png")
         shotBall.frame = CGRect(x: maxNotch, y: (screenHeight/2 - crosshairSize/2), width: ballSize, height: ballSize)
         self.view.addSubview(shotBall)
-        //shotBalls.append(shotBall) // Add newly created ball to shotBalls[] array
-        
-        shotBalls.insert(shotBall, at: 0)
+        gameItems.insert(shotBall, at: 0)
         
         /* Behaviours */
-
         /* Dynamic Item Behaviour */
         dynamicBehavior = UIDynamicItemBehavior(items: [shotBall])
         self.dynamicBehavior.addLinearVelocity(CGPoint(x:crosshairVectorXY.x, y:crosshairVectorXY.y), for: shotBall)      // Speed and direction
         dynamicAnimator.addBehavior(dynamicBehavior)    // Add dynamicItem to animator
 
-        /* Gravity Behaviour */
-        gravityBehavior = UIGravityBehavior(items: [shotBall])
+        gravityBehavior = UIGravityBehavior(items: gameItems)
         self.gravityBehavior.magnitude = 0.2            // Gravitational force
         dynamicAnimator.addBehavior(gravityBehavior)    // Add gravity to animator
 
         /* Collision Behaviour */
-        collisionBehavior = UICollisionBehavior(items: shotBalls)
+        collisionBehavior = UICollisionBehavior(items: gameItems)
         dynamicAnimator.addBehavior(collisionBehavior)  // Add collision to animator
         
         /* Passively checks for collision between ball and bird */
         collisionBehavior.action = {
-            for itemA in self.shotBalls {
+            for itemA in self.gameItems {
                 for itemB in self.birds {
                     if itemA.frame.intersects(itemB.frame) {
                         let preSubviewAmount = self.view.subviews.count
                         itemB.removeFromSuperview()
                         let postSubviewAmount = self.view.subviews.count
                         
-                        if (preSubviewAmount != postSubviewAmount){
+                        if (preSubviewAmount != postSubviewAmount) {
                             self.increaseScore(score: 1)
 
-                            /* 1 second timer set so that a bird cannot respawn in the same place instantly */
+                            // 1 second timer set so that a bird cannot respawn in the same place instantly
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                 self.birdPositions[Int(itemB.tag)] = 0
                             }
@@ -345,16 +337,17 @@ class ViewController: UIViewController, ballViewDelegate {
             }
         }
         
-        /* Despawn balls after 5 seconds - prevents memory leak. */
-        _ = Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block:{_ in
-            if self.shotBalls.count > 25 {
-                self.shotBalls[0].removeFromSuperview()
-                self.shotBalls.removeFirst()
+        /* Despawn balls after 2 seconds, if over 25 balls exist at once - prevents memory leak. */
+        _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false, block: {_ in
+            if self.gameItems.count > 25 {
+                
+                // count-3, as the last two indexes are reserved for obstacles items
+                self.gameItems[self.gameItems.count-3].removeFromSuperview()
+                self.gameItems.removeLast()
             }
         })
         
         /* Collision Boundaries - left, top and bottom sides of the screen. */
-
         self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:0, y:screenHeight))
         self.collisionBehavior.addBoundary(withIdentifier: "topBoundary" as NSCopying, from: CGPoint(x:0, y:25), to: CGPoint(x: screenWidth + maxNotch, y: 25))
         self.collisionBehavior.addBoundary(withIdentifier: "bottomBoundary" as NSCopying, from: CGPoint(x:0, y:screenHeight), to: CGPoint(x: screenWidth + maxNotch, y: screenHeight))
