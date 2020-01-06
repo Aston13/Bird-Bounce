@@ -61,27 +61,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BEa-AW-zbR">
+                                <rect key="frame" x="310" y="153" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Replay"/>
+                                <connections>
+                                    <action selector="replayButtonPressed:" destination="C6c-O9-mqT" eventType="touchUpInside" id="DRN-qO-JH5"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="USl-3b-TBK">
-                                <rect key="frame" x="296" y="172" width="76" height="30"/>
+                                <rect key="frame" x="295" y="206" width="76" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Main Menu"/>
                                 <connections>
                                     <segue destination="gAV-Gi-Llj" kind="presentation" id="p28-ow-Lcm"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Congratulations! You have completed the game!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BJG-pW-hOu">
-                                <rect key="frame" x="151" y="103" width="367" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="CeQ-Ms-um6"/>
                     </view>
                     <connections>
                         <outlet property="mainMenuButton" destination="USl-3b-TBK" id="NmI-OA-g21"/>
+                        <outlet property="replayButton" destination="BEa-AW-zbR" id="Nap-zJ-929"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vJP-1C-1gD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -129,22 +131,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="You have been defeated. Game over." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mNH-4B-QDK">
-                                <rect key="frame" x="193" y="107" width="280" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="14h-cz-1cL">
                                 <rect key="frame" x="295" y="245" width="76" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Main Menu"/>
+                                <connections>
+                                    <segue destination="gAV-Gi-Llj" kind="presentation" id="LEJ-rP-TPO"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p5w-tw-ild">
                                 <rect key="frame" x="310" y="201" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Replay"/>
+                                <connections>
+                                    <action selector="replayButtonPressed:" destination="70a-IT-Twb" eventType="touchUpInside" id="Woj-bz-zty"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -163,4 +164,7 @@
     <resources>
         <image name="aim.png" width="256" height="256"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="LEJ-rP-TPO"/>
+    </inferredMetricsTieBreakers>
 </document>

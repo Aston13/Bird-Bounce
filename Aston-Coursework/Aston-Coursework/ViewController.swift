@@ -19,7 +19,7 @@ let birdSize: CGFloat = (screenHeight-55)/5
 let ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
 
 /* Time and game configurations */
-var gameTime: TimeInterval = 30
+var gameTime: TimeInterval = 0
 var goalScore: Int = 3
 var gameInProgress: Bool = true;
 var levelNum = 0
@@ -43,6 +43,14 @@ protocol ballViewDelegate {
  * ViewController Class Main
  */
 class ViewController: UIViewController, ballViewDelegate {
+
+    /* Interface Builder: Outlets/Actions */
+    @IBOutlet weak var nextLevelButton: UIButton!
+    @IBAction func nextLevelButtonPressed(_ sender: Any) {
+        nextLevelButton.isHidden = true
+        selectLevel(level: levelNum+1)
+    }
+    @IBOutlet weak var crosshairImageView: DragImageView! // Crosshair image outlet reference
     
     /* Game items storage */
     var shotBall = UIImageView(image: nil)
@@ -64,14 +72,6 @@ class ViewController: UIViewController, ballViewDelegate {
     var dynamicBehavior: UIDynamicItemBehavior!
     var collisionBehavior: UICollisionBehavior!
     var gravityBehavior: UIGravityBehavior!
-
-    /* Interface Builder: Outlets/Actions */
-    @IBOutlet weak var nextLevelButton: UIButton!
-    @IBAction func nextLevelButtonPressed(_ sender: Any) {
-        nextLevelButton.isHidden = true
-        selectLevel(level: levelNum+1)
-    }
-    @IBOutlet weak var crosshairImageView: DragImageView! // Crosshair image outlet reference
     
     /*
      * Setup
@@ -121,7 +121,6 @@ class ViewController: UIViewController, ballViewDelegate {
         let nextLevelScreen = UIView()
         nextLevelScreen.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
         nextLevelScreen.backgroundColor = UIColor.yellow
-        
         gameInProgress = false
         
         self.view.addSubview(nextLevelScreen)
@@ -216,6 +215,7 @@ class ViewController: UIViewController, ballViewDelegate {
         initialiseScoreLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
         initialiseTimeLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
         initialiseLevelLabel(scaledWidth: uiBarWidth, amount: uiBarItemAmount)
+        initialiseNextLevelButton()
     }
     
     func initialiseScoreLabel(scaledWidth: CGFloat, amount: CGFloat) {
@@ -238,6 +238,13 @@ class ViewController: UIViewController, ballViewDelegate {
         levelLabel.textAlignment = NSTextAlignment.left
         levelLabel.text = "Level: \(levelNum)"
         self.view.addSubview(levelLabel)
+    }
+    
+    func initialiseNextLevelButton(){
+        nextLevelButton.backgroundColor = UIColor.systemPink
+        nextLevelButton.frame = CGRect(x:0, y: 0, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        nextLevelButton.center.x = (screenWidth+maxNotch)/2
+        nextLevelButton.center.y = (screenHeight/2)
     }
     
     func updateTimeLabel() {

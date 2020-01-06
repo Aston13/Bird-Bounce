@@ -15,6 +15,7 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var playButton: UIButton!
     @IBAction func playButtonPressed(_ sender: Any) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "Main") as! ViewController
+        vc.dismiss(animated: false, completion: nil)
         vc.selectLevel(level: 1)
         self.present(vc, animated: false, completion: nil)
     }
@@ -27,6 +28,8 @@ class MenuViewController: UIViewController {
         exit(-1)
     }
     
+    let menuUI = UIImageView(image: nil)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -38,34 +41,56 @@ class MenuViewController: UIViewController {
     }
     
     func initialiseUI() {
+
+        menuUI.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
+        menuUI.backgroundColor = UIColor.darkGray
+        self.view.addSubview(menuUI)
+        
+        initialiseGameLogo()
         initialiseStartButton()
         initialiseHowToPlayButton()
         initialiseQuitButton()
+        initialiseCreditsLabel()
+        
+        self.view.sendSubviewToBack(menuUI)
+    }
+    
+    func initialiseGameLogo() {
+        let gameLogo = UIImageView(image: nil)
+        gameLogo.backgroundColor = UIColor.green
+        gameLogo.frame = CGRect(x:0, y: (screenHeight/8), width: (screenWidth+maxNotch)/2, height: (screenHeight/8)*2)
+        gameLogo.center.x = menuUI.center.x
+        
+        self.view.addSubview(gameLogo)
     }
     
     func initialiseStartButton() {
         playButton.backgroundColor = UIColor.systemPink
-        playButton.translatesAutoresizingMaskIntoConstraints = false
-        playButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        playButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        playButton.frame = CGRect(x:0, y: (screenHeight/8)*3, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        playButton.center.x = menuUI.center.x
     }
     
     func initialiseHowToPlayButton() {
         howToPlayButton.backgroundColor = UIColor.purple
-        
-        howToPlayButton.translatesAutoresizingMaskIntoConstraints = false
-        let centerXConstraint = NSLayoutConstraint(item: howToPlayButton!, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0.0)
-        let centerYConstraint = NSLayoutConstraint(item: howToPlayButton!, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.2, constant: 0.0)
-        NSLayoutConstraint.activate([centerXConstraint, centerYConstraint])
+        howToPlayButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        howToPlayButton.center.x = menuUI.center.x
     }
     
     func initialiseQuitButton() {
         quitButton.backgroundColor = UIColor.green
+        quitButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        quitButton.center.x = menuUI.center.x
+    }
+    
+    func initialiseCreditsLabel() {
+        let creditsLabel = UILabel()
+        creditsLabel.backgroundColor = UIColor.blue
+        creditsLabel.frame = CGRect(x:screenWidth - (screenWidth+maxNotch)/2, y: (screenHeight/8)*7, width: (screenWidth+maxNotch)/2, height: screenHeight/8)
+        creditsLabel.textAlignment = .right
+        creditsLabel.text = "Developed by Aston Turner"
         
-        quitButton.translatesAutoresizingMaskIntoConstraints = false
-        let centerXConstraint = NSLayoutConstraint(item: quitButton!, attribute: .centerX, relatedBy: .equal, toItem: view, attribute: .centerX, multiplier: 1.0, constant: 0.0)
-        let centerYConstraint = NSLayoutConstraint(item: quitButton!, attribute: .centerY, relatedBy: .equal, toItem: view, attribute: .centerY, multiplier: 1.4, constant: 0.0)
-        NSLayoutConstraint.activate([centerXConstraint, centerYConstraint])
+        
+        self.view.addSubview(creditsLabel)
     }
     
     /* Function to force orientation to landscape. */
