@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVFoundation
 
 /* Global variables */
 /* Dimensions */
@@ -26,6 +25,9 @@ var gameInProgress: Bool = true;
 var levelNum = 0
 var birdTimer: Timer?
 var gameTimer: Timer?
+
+//View Controller reference for AnimationController
+var arViewControllerInstance = ViewController()
 
 /* 5 possible bird co-ordinate positions TR -> BR */
 let positionsArray: [CGRect] = [
@@ -80,7 +82,8 @@ class ViewController: UIViewController, ballViewDelegate {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        arViewControllerInstance = self
+        stopAllAnimations = false
         // Passes the main view to dynamics as the reference view
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         
@@ -110,6 +113,7 @@ class ViewController: UIViewController, ballViewDelegate {
         // gameInProgress check ensures that the game isn't paused or in a transition screen
         if (gameInProgress) {
             gameItems.removeAll()
+            stopAllAnimations = true
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "endGame") as! EndViewController
             self.present(vc, animated: false, completion: nil)
         }
@@ -184,7 +188,7 @@ class ViewController: UIViewController, ballViewDelegate {
         
         // Create obstacle
         obstacle.frame = CGRect(x:randomX,y:randomY,width:randomWH,height:randomWH)
-        obstacle.image = UIImage(named: "brickWall.png")
+        obstacle.image = UIImage(named: "stoneTexture")
         //obstacle.backgroundColor = UIColor.red
         self.view.addSubview(obstacle)
         gameItems.append(obstacle)
@@ -269,6 +273,7 @@ class ViewController: UIViewController, ballViewDelegate {
         totalScore = totalScore + score
         scoreLabel.text = "Score: \(totalScore)/\(goalScore)"
         if Int(totalScore) == Int(goalScore) {
+            stopAllAnimations = true
             if levelNum == 3 {
                 gameWon()   // Game complete
             } else {
@@ -298,6 +303,7 @@ class ViewController: UIViewController, ballViewDelegate {
         }
     }
     
+    
     /* Adds a random bird in the position (0-4) passed.
      * slotNum is used as an identifaction tag to track the slot position.
      */
@@ -322,7 +328,7 @@ class ViewController: UIViewController, ballViewDelegate {
         // Create a ball and add it to the subview
         shotBall = UIImageView(image: nil)
         //shotBall.image = UIImage(named: "ball.png")
-        shotBall.image = UIImage(named: "ninjaStar.png")
+        shotBall.image = UIImage(named: "ball")
         shotBall.frame = CGRect(x: maxNotch, y: (screenHeight/2 - crosshairSize/2), width: ballSize, height: ballSize)
         self.view.addSubview(shotBall)
         gameItems.insert(shotBall, at: 0)
@@ -357,8 +363,9 @@ class ViewController: UIViewController, ballViewDelegate {
                             self.increaseScore(score: 1)
                             playVibrate()
                             playDeathSound()
+                            addDeadBirdAnimation(pos: itemB.tag, vc: arViewControllerInstance)
 
-                            // 2 second timer set so that a bird cannot respawn in the same place instantly
+                            // 2 second delay set so that a bird cannot respawn in the same place instantly
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                                 self.birdPositions[Int(itemB.tag)] = 0
                             }
