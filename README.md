@@ -29,7 +29,8 @@ and random position (also within a safe position boundary range).
 
 ## Deployment
 
-iPhone or iOS simulator in Xcode. Tested versions were iPhone 8 and iPhone 11.
+* iOS Simulator in Xcode - Tested versions were iPhone 8 and iPhone 11.
+* Physical iPhone device - Tested versions iPhone 6S, iPhone 8, iPhone X
 
 ## Built With
 
