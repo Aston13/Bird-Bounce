@@ -45,7 +45,7 @@ and random position (also within a safe position boundary range).
 
 * **Aston Turner** - *Initial work* - [Aston13](https://github.com/Aston13)
 
-See also the list of [contributors](https://github.com/Aston13/Doggo/graphs/contributors) who are involved with this project.
+See also the list of [contributors](https://github.com/Aston13/16052488/graphs/contributors) who are involved with this project.
 
 ## Acknowledgments
 
