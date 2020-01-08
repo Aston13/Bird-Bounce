@@ -160,20 +160,20 @@ class ViewController: UIViewController, ballViewDelegate {
         
         // Level selection
         if levelNum == 1 {
-            goalScore = 3
+            goalScore = 5
             gameTime = 30
             backgroundFrame.image = (UIImage(named: "gameBackground1"))
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
         } else if levelNum == 2 {
-            goalScore = 4
+            goalScore = 10
             gameTime = 40
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
             vc.addRandomObstacle()
             vc.backgroundFrame.image = (UIImage(named: "gameBackground2"))
         } else if levelNum == 3 {
-            goalScore = 5
+            goalScore = 15
             gameTime = 50
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
