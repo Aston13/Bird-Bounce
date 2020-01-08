@@ -25,10 +25,6 @@ class EndViewController: UIViewController {
         super.viewDidLoad()
         initialiseUI()
         playLostSound()
-
-        // Orientation initialisation
-        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
     }
     
     func initialiseUI() {

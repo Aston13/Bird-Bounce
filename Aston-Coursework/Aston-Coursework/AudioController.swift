@@ -48,34 +48,33 @@ public func playMusic(){
 }
 
 public func playDeathSound(){
-    soundPath = Bundle.main.path(forResource: "boing", ofType: "wav")
+    soundPath = Bundle.main.path(forResource: "Audio/boing", ofType: "wav")
     url = URL(fileURLWithPath: soundPath!)
     audioPlayer1?.volume = 200
     playSound1()
 }
 
 public func playShotSound(){
-    soundPath = Bundle.main.path(forResource: "shot", ofType: "wav")
+    soundPath = Bundle.main.path(forResource: "Audio/shot", ofType: "wav")
     url = URL(fileURLWithPath: soundPath!)
     audioPlayer1?.volume = 100
     playSound1()
 }
 
-/* Source: https://freesound.org/people/wi-photos/sounds/489554/ */
 public func playMenuMusic(){
-    soundPath = Bundle.main.path(forResource: "menu", ofType: "wav")
+    soundPath = Bundle.main.path(forResource: "Audio/menu", ofType: "wav")
     url = URL(fileURLWithPath: soundPath!)
     playMusic()
 }
 
 public func playWinSound(){
-    soundPath = Bundle.main.path(forResource: "win", ofType: "mp3")
+    soundPath = Bundle.main.path(forResource: "Audio/win", ofType: "mp3")
     url = URL(fileURLWithPath: soundPath!)
     playSound2()
 }
 
 public func playLostSound(){
-    soundPath = Bundle.main.path(forResource: "loss", ofType: "wav")
+    soundPath = Bundle.main.path(forResource: "Audio/loss", ofType: "wav")
     url = URL(fileURLWithPath: soundPath!)
     playSound2()
 }

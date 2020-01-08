@@ -62,11 +62,7 @@ class MenuViewController: UIViewController {
         menuViewControllerInstance = self
         initialiseUI()
         playMenuMusic()
-        
-        
-        // Orientation initialisation
-        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -240,6 +236,7 @@ class MenuViewController: UIViewController {
         Menu Background by Siripoom© https://pixabay.com/photos/star-background-night-dark-4246461/\n
         In-Game Backgrounds by CraftPix© https://craftpix.net/freebies/free-horizontal-2d-game-backgrounds/\n
         Red Crosshair (redAim) by Aris Katsaris© https://en.m.wikipedia.org/wiki/File:Crosshairs_Red.svg\n
+        Ball by Vexels©\n
         
         """
         creditsView.backgroundColor = UIColor.darkGray

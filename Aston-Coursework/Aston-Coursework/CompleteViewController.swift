@@ -25,10 +25,6 @@ class CompleteViewController: UIViewController {
         super.viewDidLoad()
         initialiseUI()
         playWinSound()
-    
-        // Orientation initialisation
-        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
     }
     func initialiseUI() {
 

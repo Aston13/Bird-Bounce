@@ -100,10 +100,7 @@ class ViewController: UIViewController, ballViewDelegate {
         gameTimer = Timer.scheduledTimer(withTimeInterval: gameTime, repeats: false, block:{_ in
             self.gameOver()
         })
-        
-        // Orientation initialisation
-        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-        UIDevice.current.setValue(value, forKey: "orientation")
+
         crosshairImageView.myBallDelegate = self
         initialiseUI()
     }
@@ -197,7 +194,7 @@ class ViewController: UIViewController, ballViewDelegate {
          * to always allow enough space for a ball to pass between two obstacles
          */
         let randomWH: Int = Int.random(in: 40...(Int(screenHeight/2) - Int(ballSize*2)))
-        let rangeXMax: Int = Int(screenWidth-20)-(randomWH*2)
+        let rangeXMax: Int = Int(screenWidth-birdSize)-(randomWH*2)
         let rangeYMax: Int = Int(screenHeight)-randomWH
         let randomY: Int = Int.random(in: 25...rangeYMax)
         let randomX: Int = Int.random(in: rangeXMin...rangeXMax)
@@ -217,11 +214,6 @@ class ViewController: UIViewController, ballViewDelegate {
 
         collisionBehavior = UICollisionBehavior(items: [obstacle])
         dynamicAnimator.addBehavior(collisionBehavior) // Add collision to animator
-        
-        
-        
-        
-        
     }
     
 
@@ -308,7 +300,7 @@ class ViewController: UIViewController, ballViewDelegate {
      * starting location and dimensions.
      */
     func initialiseCrosshair() {
-        crosshairImageView.image = UIImage(named: "aimRed.png")
+        crosshairImageView.image = UIImage(named: "aim.png")
         crosshairImageView.frame = CGRect(x: maxNotch, y: (screenHeight/2) - (crosshairSize/2), width: crosshairSize, height: crosshairSize)
         self.view.addSubview(crosshairImageView)
     }
