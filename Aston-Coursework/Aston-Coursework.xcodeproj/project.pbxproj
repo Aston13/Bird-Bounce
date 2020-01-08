@@ -481,7 +481,7 @@
 		D9526E6B239E8E5E003B281C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8JP858JW2H;
 				INFOPLIST_FILE = "Aston-Coursework/Info.plist";
@@ -499,7 +499,7 @@
 		D9526E6C239E8E5E003B281C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8JP858JW2H;
 				INFOPLIST_FILE = "Aston-Coursework/Info.plist";

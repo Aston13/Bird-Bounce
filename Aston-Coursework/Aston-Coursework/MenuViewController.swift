@@ -19,6 +19,7 @@ class MenuViewController: UIViewController {
         vc.dismiss(animated: false, completion: nil)
         vc.selectLevel(level: 1)
         self.present(vc, animated: false, completion: nil)
+        
     }
 
     @IBOutlet weak var creditsButton: UIButton!
@@ -38,9 +39,6 @@ class MenuViewController: UIViewController {
         creditsView.isHidden = true
         closeButton.isHidden = true
     }
-    
-    
-    
     
     let creditsFrame = CGRect(x: (screenWidth+maxNotch)*0.05, y: screenHeight*0.05, width: (screenWidth+maxNotch)*0.9, height: screenHeight*0.9)
     let creditsView = UITextView()
@@ -79,6 +77,7 @@ class MenuViewController: UIViewController {
 
         menuUI.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
         menuUI.backgroundColor = UIColor.black
+        menuUI.image = UIImage(named: "menuBackground")
         self.view.addSubview(menuUI)
         
         initialiseGameLogo()
@@ -92,24 +91,36 @@ class MenuViewController: UIViewController {
     }
     
     func initialiseGameLogo() {
+        let gameLogoHeight = (screenHeight/8)*2.5
         let gameLogo = UIImageView(image: nil)
-        gameLogo.backgroundColor = UIColor.green
-        gameLogo.frame = CGRect(x:0, y: (screenHeight/8), width: (screenWidth+maxNotch)/2, height: (screenHeight/8)*2)
+        gameLogo.frame = CGRect(x:0, y: (screenHeight/20), width: gameLogoHeight*4.5, height: gameLogoHeight)
         gameLogo.center.x = menuUI.center.x
+        gameLogo.image = UIImage(named: "birdBounce")
         
         self.view.addSubview(gameLogo)
     }
     
     func initialiseStartButton() {
-        playButton.backgroundColor = UIColor.systemPink
-        playButton.frame = CGRect(x:0, y: (screenHeight/8)*3, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        playButton.layer.cornerRadius = 5
+        playButton.layer.borderWidth = 1
+        playButton.layer.borderColor = UIColor.lightGray.cgColor
+        
+        playButton.frame = CGRect(x:0, y: (screenHeight/8)*3, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         playButton.center.x = menuUI.center.x
+        playButton.setBackgroundImage(UIImage(named:"Play"), for: .normal)
+        playButton.setTitle(nil, for: .normal)
     }
     
     func initialiseCreditsButton() {
-        creditsButton.backgroundColor = UIColor.purple
-        creditsButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        creditsButton.layer.cornerRadius = 5
+        creditsButton.layer.borderWidth = 1
+        creditsButton.layer.borderColor = UIColor.lightGray.cgColor
+        
+        creditsButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         creditsButton.center.x = menuUI.center.x
+        creditsButton.setBackgroundImage(UIImage(named:"Credits"), for: .normal)
+        creditsButton.setTitle(nil, for: .normal)
+        
         
     }
     
@@ -120,16 +131,22 @@ class MenuViewController: UIViewController {
     }
     
     func initialiseQuitButton() {
-        quitButton.backgroundColor = UIColor.green
-        quitButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        //quitButton.backgroundColor = UIColor.systemBlue
+        quitButton.layer.cornerRadius = 5
+        quitButton.layer.borderWidth = 1
+        quitButton.layer.borderColor = UIColor.lightGray.cgColor
+        
+        quitButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         quitButton.center.x = menuUI.center.x
+        quitButton.setBackgroundImage(UIImage(named:"Quit"), for: .normal)
+        quitButton.setTitle(nil, for: .normal)
     }
     
     func initialiseCreditsLabel() {
         let creditsLabel = UILabel()
-        creditsLabel.backgroundColor = UIColor.blue
         creditsLabel.frame = CGRect(x:screenWidth - (screenWidth+maxNotch)/2, y: (screenHeight/8)*7, width: (screenWidth+maxNotch)/2, height: screenHeight/8)
         creditsLabel.textAlignment = .right
+        creditsLabel.textColor = UIColor.white
         creditsLabel.text = "Developed by Aston Turner"
         
         self.view.addSubview(creditsLabel)
@@ -220,6 +237,9 @@ class MenuViewController: UIViewController {
         Explosion /ExplosionFrames by Sinestesia© https://opengameart.org/content/2d-explosion-animations-frame-by-frame\n
         Stone Texture (stoneTexture) by Daniel Smith© https://www.publicdomainpictures.net/pictures/70000/velka/stone-texture-i.jpg\n
         Close Button (close) by Molumen© http://www.freestockphotos.biz/stockphoto/15107\n
+        Menu Background by Siripoom© https://pixabay.com/photos/star-background-night-dark-4246461/\n
+        In-Game Backgrounds by CraftPix© https://craftpix.net/freebies/free-horizontal-2d-game-backgrounds/\n
+        Red Crosshair (redAim) by Aris Katsaris© https://en.m.wikipedia.org/wiki/File:Crosshairs_Red.svg\n
         
         """
         creditsView.backgroundColor = UIColor.darkGray

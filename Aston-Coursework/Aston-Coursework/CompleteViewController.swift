@@ -33,7 +33,8 @@ class CompleteViewController: UIViewController {
     func initialiseUI() {
 
         completeUI.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
-        completeUI.backgroundColor = UIColor.darkGray
+        completeUI.backgroundColor = UIColor.black
+        completeUI.image = UIImage(named: "menuBackground")
         self.view.addSubview(completeUI)
         
         initialiseGameCompletedLogo()
@@ -44,24 +45,37 @@ class CompleteViewController: UIViewController {
     }
     
     func initialiseGameCompletedLogo(){
+        let completeLogoHeight = (screenHeight/8)*2.5
         let gameCompletedLogo = UIImageView(image: nil)
-        gameCompletedLogo.backgroundColor = UIColor.green
-        gameCompletedLogo.frame = CGRect(x:0, y: (screenHeight/8), width: (screenWidth+maxNotch)/2, height: (screenHeight/8)*2)
+        gameCompletedLogo.frame = CGRect(x:0, y: (screenHeight/8), width: completeLogoHeight*5.5, height: completeLogoHeight)
         gameCompletedLogo.center.x = completeUI.center.x
+
+        gameCompletedLogo.image = UIImage(named:"gameComplete")
+        
         
         self.view.addSubview(gameCompletedLogo)
     }
     
     func initialiseReplayButton(){
-        replayButton.backgroundColor = UIColor.systemYellow
-        replayButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        replayButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         replayButton.center.x = completeUI.center.x
+        
+        replayButton.layer.cornerRadius = 5
+        replayButton.layer.borderWidth = 1
+        replayButton.layer.borderColor = UIColor.lightGray.cgColor
+        replayButton.setBackgroundImage(UIImage(named:"Replay"), for: .normal)
+        replayButton.setTitle(nil, for: .normal)
     }
     
     func initialiseMainMenuButton(){
-        mainMenuButton.backgroundColor = UIColor.systemYellow
-        mainMenuButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
+        mainMenuButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         mainMenuButton.center.x = completeUI.center.x
+        
+        mainMenuButton.layer.cornerRadius = 5
+        mainMenuButton.layer.borderWidth = 1
+        mainMenuButton.layer.borderColor = UIColor.lightGray.cgColor
+        mainMenuButton.setBackgroundImage(UIImage(named:"Menu"), for: .normal)
+        mainMenuButton.setTitle(nil, for: .normal)
     }
     
     /* Function to force orientation to landscape. */

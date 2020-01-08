@@ -66,10 +66,11 @@ class ViewController: UIViewController, ballViewDelegate {
     var birdPositions: [Int] = [0,0,0,0,0] // Bird position slots TR -> BR. 0 = Empty. 1 = Occupied.
     
     /* UI */
-    var uiBar = UIView()
+    var uiBar = UIImageView()
     let scoreLabel = UILabel()
     var totalScore: Int = 0
     let timeLabel = UILabel()
+    let backgroundFrame = UIImageView(image: nil)
     
     /* Behavioural variables */
     var dynamicAnimator: UIDynamicAnimator! // Physics Engine
@@ -103,9 +104,18 @@ class ViewController: UIViewController, ballViewDelegate {
         // Orientation initialisation
         let value = UIInterfaceOrientation.landscapeLeft.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
-        
         crosshairImageView.myBallDelegate = self
         initialiseUI()
+    }
+    
+    /* Function to force orientation to landscape. */
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .landscape
+    }
+    
+    /* Function to allow autorotate of orientation. */
+    override var shouldAutorotate: Bool {
+        return true
     }
     
     func gameOver() {
@@ -126,13 +136,16 @@ class ViewController: UIViewController, ballViewDelegate {
     }
     
     func levelWon() {
-        let nextLevelScreen = UIView()
+        let nextLevelScreen = UIImageView()
         nextLevelScreen.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
-        nextLevelScreen.backgroundColor = UIColor.yellow
+        nextLevelScreen.backgroundColor = UIColor.black
+        nextLevelScreen.image = UIImage(named: "menuBackground")
         gameInProgress = false
+        
         
         self.view.addSubview(nextLevelScreen)
         nextLevelButton.isHidden = false
+        crosshairImageView.removeFromSuperview()
         self.view.bringSubviewToFront(nextLevelButton)
     }
     
@@ -152,6 +165,7 @@ class ViewController: UIViewController, ballViewDelegate {
         if levelNum == 1 {
             goalScore = 3
             gameTime = 30
+            backgroundFrame.image = (UIImage(named: "gameBackground1"))
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
         } else if levelNum == 2 {
@@ -160,6 +174,7 @@ class ViewController: UIViewController, ballViewDelegate {
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
             vc.addRandomObstacle()
+            vc.backgroundFrame.image = (UIImage(named: "gameBackground2"))
         } else if levelNum == 3 {
             goalScore = 5
             gameTime = 50
@@ -167,6 +182,7 @@ class ViewController: UIViewController, ballViewDelegate {
             gameInProgress = true
             vc.addRandomObstacle()
             vc.addRandomObstacle()
+            vc.backgroundFrame.image = (UIImage(named: "gameBackground4"))
         }
     }
     
@@ -181,7 +197,7 @@ class ViewController: UIViewController, ballViewDelegate {
          * to always allow enough space for a ball to pass between two obstacles
          */
         let randomWH: Int = Int.random(in: 40...(Int(screenHeight/2) - Int(ballSize*2)))
-        let rangeXMax: Int = Int(screenWidth)-(randomWH*2)
+        let rangeXMax: Int = Int(screenWidth-20)-(randomWH*2)
         let rangeYMax: Int = Int(screenHeight)-randomWH
         let randomY: Int = Int.random(in: 25...rangeYMax)
         let randomX: Int = Int.random(in: rangeXMin...rangeXMax)
@@ -189,7 +205,8 @@ class ViewController: UIViewController, ballViewDelegate {
         // Create obstacle
         obstacle.frame = CGRect(x:randomX,y:randomY,width:randomWH,height:randomWH)
         obstacle.image = UIImage(named: "stoneTexture")
-        //obstacle.backgroundColor = UIColor.red
+        obstacle.layer.borderWidth = 2
+        obstacle.layer.borderColor = UIColor.darkGray.cgColor
         self.view.addSubview(obstacle)
         gameItems.append(obstacle)
         
@@ -207,30 +224,22 @@ class ViewController: UIViewController, ballViewDelegate {
         
     }
     
-    /* Function to force orientation to landscape. */
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .landscape
-    }
-    
-    /* Function to allow autorotate of orientation. */
-    override var shouldAutorotate: Bool {
-        return true
-    }
+
     
     func initialiseUI() {
         let uiBarWidth: CGFloat = (screenWidth + maxNotch)
         let uiBarItemAmount: CGFloat = 3;
-        let backgroundFrame = UIImageView(image: nil)
         backgroundFrame.frame = CGRect(x:0, y:0, width: screenWidth + maxNotch, height: screenHeight)
-        backgroundFrame.image = (UIImage(named: "candyBackground"))
+        
         self.view.addSubview(backgroundFrame)
         self.view.sendSubviewToBack(backgroundFrame)
+        uiBar.image = UIImage(named:"menuBackground")
+        uiBar.frame = CGRect(x:0, y:-1, width: uiBarWidth, height: 26)
+        uiBar.backgroundColor = UIColor.darkGray
         
-        
-        
-        
-        uiBar.frame = CGRect(x:0, y:0, width: uiBarWidth, height: 25)
-        uiBar.backgroundColor = UIColor.systemGray
+        uiBar.layer.borderWidth = 1
+        uiBar.layer.borderColor = UIColor.lightGray.cgColor
+        uiBar.layer.cornerRadius = 5
         self.view.addSubview(uiBar)
         
         initialiseCrosshair()
@@ -242,31 +251,39 @@ class ViewController: UIViewController, ballViewDelegate {
     
     func initialiseScoreLabel(scaledWidth: CGFloat, amount: CGFloat) {
         scoreLabel.frame = CGRect(x:maxNotch, y: 0, width: scaledWidth/amount, height: 25)
-        scoreLabel.textAlignment = NSTextAlignment.left
+        scoreLabel.textAlignment = NSTextAlignment.center
+        scoreLabel.textColor = UIColor.white
         scoreLabel.text = "Score: \(totalScore)/\(goalScore)"
         self.view.addSubview(scoreLabel)
     }
     
     func initialiseTimeLabel(scaledWidth: CGFloat, amount: CGFloat) {
-        timeLabel.frame = CGRect(x:maxNotch + (screenWidth/3), y: 0, width: (scaledWidth/amount)*2, height: 25)
-        timeLabel.textAlignment = NSTextAlignment.left
+        timeLabel.frame = CGRect(x:maxNotch + (screenWidth/3), y: 0, width: (scaledWidth/amount), height: 25)
+        timeLabel.textAlignment = NSTextAlignment.center
+        timeLabel.textColor = UIColor.white
         timeLabel.text = "Time Remaining: \(Int(gameTime))"
         self.view.addSubview(timeLabel)
     }
     
     func initialiseLevelLabel(scaledWidth: CGFloat, amount: CGFloat) {
         let levelLabel = UILabel()
-        levelLabel.frame = CGRect(x:maxNotch + (screenWidth/3)*2, y: 0, width: (scaledWidth/amount)*3, height: 25)
-        levelLabel.textAlignment = NSTextAlignment.left
+        levelLabel.frame = CGRect(x:maxNotch + (screenWidth/3)*2, y: 0, width: (scaledWidth/amount), height: 25)
+        levelLabel.textAlignment = NSTextAlignment.center
+        levelLabel.textColor = UIColor.white
         levelLabel.text = "Level: \(levelNum)"
         self.view.addSubview(levelLabel)
     }
     
     func initialiseNextLevelButton(){
-        nextLevelButton.backgroundColor = UIColor.systemPink
         nextLevelButton.frame = CGRect(x:0, y: 0, width: (screenWidth+maxNotch)/4, height: screenHeight/8)
         nextLevelButton.center.x = (screenWidth+maxNotch)/2
         nextLevelButton.center.y = (screenHeight/2)
+        
+        nextLevelButton.layer.cornerRadius = 5
+        nextLevelButton.layer.borderWidth = 1
+        nextLevelButton.layer.borderColor = UIColor.lightGray.cgColor
+        nextLevelButton.setBackgroundImage(UIImage(named:"nextLevel"), for: .normal)
+        nextLevelButton.setTitle(nil, for: .normal)
     }
     
     func updateTimeLabel() {
@@ -291,7 +308,7 @@ class ViewController: UIViewController, ballViewDelegate {
      * starting location and dimensions.
      */
     func initialiseCrosshair() {
-        crosshairImageView.image = UIImage(named: "aim.png")
+        crosshairImageView.image = UIImage(named: "aimRed.png")
         crosshairImageView.frame = CGRect(x: maxNotch, y: (screenHeight/2) - (crosshairSize/2), width: crosshairSize, height: crosshairSize)
         self.view.addSubview(crosshairImageView)
     }
@@ -332,8 +349,7 @@ class ViewController: UIViewController, ballViewDelegate {
         
         // Create a ball and add it to the subview
         shotBall = UIImageView(image: nil)
-        //shotBall.image = UIImage(named: "ball.png")
-        shotBall.image = UIImage(named: "ball")
+        shotBall.image = UIImage(named: "yellowBall")
         shotBall.frame = CGRect(x: maxNotch, y: (screenHeight/2 - crosshairSize/2), width: ballSize, height: ballSize)
         self.view.addSubview(shotBall)
         gameItems.insert(shotBall, at: 0)
