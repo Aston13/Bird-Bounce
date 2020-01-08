@@ -27,7 +27,7 @@ var birdTimer: Timer?
 var gameTimer: Timer?
 
 //View Controller reference for AnimationController
-var arViewControllerInstance = ViewController()
+var mainViewControllerInstance = ViewController()
 
 /* 5 possible bird co-ordinate positions TR -> BR */
 let positionsArray: [CGRect] = [
@@ -82,7 +82,7 @@ class ViewController: UIViewController, ballViewDelegate {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        arViewControllerInstance = self
+        mainViewControllerInstance = self
         stopAllAnimations = false
         // Passes the main view to dynamics as the reference view
         dynamicAnimator = UIDynamicAnimator(referenceView: self.view)
@@ -200,6 +200,11 @@ class ViewController: UIViewController, ballViewDelegate {
 
         collisionBehavior = UICollisionBehavior(items: [obstacle])
         dynamicAnimator.addBehavior(collisionBehavior) // Add collision to animator
+        
+        
+        
+        
+        
     }
     
     /* Function to force orientation to landscape. */
@@ -363,7 +368,7 @@ class ViewController: UIViewController, ballViewDelegate {
                             self.increaseScore(score: 1)
                             playVibrate()
                             playDeathSound()
-                            addDeadBirdAnimation(pos: itemB.tag, vc: arViewControllerInstance)
+                            addDeadBirdAnimation(pos: itemB.tag, vc: mainViewControllerInstance)
 
                             // 2 second delay set so that a bird cannot respawn in the same place instantly
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {

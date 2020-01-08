@@ -24,11 +24,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pvZ-as-3pb">
-                                <rect key="frame" x="293" y="186" width="81" height="30"/>
+                                <rect key="frame" x="301" y="186" width="66" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="How to Play"/>
+                                <state key="normal" title="Credits ©"/>
                                 <connections>
-                                    <action selector="howToPlayPressed:" destination="gAV-Gi-Llj" eventType="touchUpInside" id="Qmg-RZ-bjN"/>
+                                    <action selector="creditsButtonPressed:" destination="gAV-Gi-Llj" eventType="touchUpInside" id="rcy-dK-cfM"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wa-8d-FGt">
@@ -39,12 +39,21 @@
                                     <action selector="quitPressed:" destination="gAV-Gi-Llj" eventType="touchUpInside" id="hOM-eM-kz3"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xjr-I9-7fc">
+                                <rect key="frame" x="185" y="95" width="39" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Close"/>
+                                <connections>
+                                    <action selector="closeButtonPressed:" destination="gAV-Gi-Llj" eventType="touchUpInside" id="4F4-WM-LJE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="qzi-Ue-boj"/>
                     </view>
                     <connections>
-                        <outlet property="howToPlayButton" destination="pvZ-as-3pb" id="7Ci-Gj-Lb4"/>
+                        <outlet property="closeButton" destination="Xjr-I9-7fc" id="idx-O4-Cln"/>
+                        <outlet property="creditsButton" destination="pvZ-as-3pb" id="qGu-pX-2cX"/>
                         <outlet property="playButton" destination="kJs-tk-Ht0" id="U4K-T8-vGg"/>
                         <outlet property="quitButton" destination="3wa-8d-FGt" id="vbb-Nl-cPh"/>
                     </connections>

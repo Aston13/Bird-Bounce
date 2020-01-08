@@ -9,8 +9,10 @@
 import Foundation
 import UIKit
 
+
 var stopAllAnimations: Bool = false
 let explosionImages = createImageArray(total:64, imagePrefix: "tile0")
+
 
 func createImageArray(total: Int, imagePrefix: String) -> [UIImage] {
     var imageArray: [UIImage] = []
