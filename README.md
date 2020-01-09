@@ -24,7 +24,8 @@ and random position (also within a safe position boundary range).
 * Multiple level layouts (3 different levels).
 * Credits page pop-up view.
 * Replay button at the end of the game.
-* Live in-game UI: Score counter, time remaining, current level.
+* Ball objects have gravity behaviour attached.
+* Live in-game UI: Score counter, time remaining, current level (static).
 * Landscape-only orientation with autorotate (landscape.left and landscape.right).
 * Graphics incuding App icon set for all iPhone models.
 * If more than 25 balls exist at once, the oldest ball will be deleted every 2 seconds to free up processing power 
