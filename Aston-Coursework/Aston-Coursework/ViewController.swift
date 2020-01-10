@@ -16,7 +16,7 @@ var screenHeight = UIScreen.main.bounds.height
 let crosshairSize: CGFloat = 50 // Crosshair size - square - even x and y dimensions
 var crosshairVectorXY = CGPoint(x:0,y:0) // Vector used to store and retrieve the angle of the shot fired
 let birdSize: CGFloat = (screenHeight-55)/5
-let ballSize: CGFloat = 50; // Ball size - square - even x and y dimensions
+var ballSize: CGFloat! // Ball size - square - even x and y dimensions
 
 /* Time and game configurations */
 var gameTime: TimeInterval = 0
@@ -133,13 +133,13 @@ class ViewController: UIViewController, ballViewDelegate {
     }
     
     func levelWon() {
+        
         let nextLevelScreen = UIImageView()
         nextLevelScreen.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
         nextLevelScreen.backgroundColor = UIColor.black
         nextLevelScreen.image = UIImage(named: "menuBackground")
         gameInProgress = false
-        
-        
+   
         self.view.addSubview(nextLevelScreen)
         nextLevelButton.isHidden = false
         crosshairImageView.removeFromSuperview()
@@ -160,21 +160,27 @@ class ViewController: UIViewController, ballViewDelegate {
         
         // Level selection
         if levelNum == 1 {
-            goalScore = 5
+            timeRemaining = 0
+            goalScore = 3
             gameTime = 30
+            ballSize = 50
             backgroundFrame.image = (UIImage(named: "gameBackground1"))
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
         } else if levelNum == 2 {
-            goalScore = 10
+            timeRemaining += Int(gameTime)
+            goalScore = 6
             gameTime = 40
+            ballSize = 50
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
             vc.addRandomObstacle()
             vc.backgroundFrame.image = (UIImage(named: "gameBackground2"))
         } else if levelNum == 3 {
-            goalScore = 15
+            timeRemaining += Int(gameTime)
+            goalScore = 9
             gameTime = 50
+            ballSize = 30
             self.present(vc, animated: false, completion: nil)
             gameInProgress = true
             vc.addRandomObstacle()
@@ -289,6 +295,7 @@ class ViewController: UIViewController, ballViewDelegate {
         if Int(totalScore) == Int(goalScore) {
             stopAllAnimations = true
             if levelNum == 3 {
+                timeRemaining += Int(gameTime)
                 gameWon()   // Game complete
             } else {
                 levelWon()  // Next level
@@ -399,7 +406,7 @@ class ViewController: UIViewController, ballViewDelegate {
         })
         
         /* Collision Boundaries - left, top and bottom sides of the screen. */
-        self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:0, y:screenHeight))
+        self.collisionBehavior.addBoundary(withIdentifier: "leftBoundary" as NSCopying, from: CGPoint(x:0, y:0), to: CGPoint(x:maxNotch, y:screenHeight))
         self.collisionBehavior.addBoundary(withIdentifier: "topBoundary" as NSCopying, from: CGPoint(x:0, y:25), to: CGPoint(x: screenWidth + maxNotch, y: 25))
         self.collisionBehavior.addBoundary(withIdentifier: "bottomBoundary" as NSCopying, from: CGPoint(x:0, y:screenHeight), to: CGPoint(x: screenWidth + maxNotch, y: screenHeight))
         

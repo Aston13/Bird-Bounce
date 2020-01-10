@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		813560A123C79DAA00C91324 /* Aston-Coursework.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8135609F23C79DAA00C91324 /* Aston-Coursework.xcdatamodeld */; };
+		813560A323C7A37A00C91324 /* PersistenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813560A223C7A37A00C91324 /* PersistenceService.swift */; };
+		813560A623C7A68E00C91324 /* Score+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813560A423C7A68E00C91324 /* Score+CoreDataClass.swift */; };
+		813560A723C7A68E00C91324 /* Score+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813560A523C7A68E00C91324 /* Score+CoreDataProperties.swift */; };
 		8141B99C23C3BDA5008BEB69 /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141B99B23C3BDA5008BEB69 /* AudioController.swift */; };
 		8141B99E23C3BE51008BEB69 /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141B99D23C3BE51008BEB69 /* AnimationController.swift */; };
 		8159D9CF23C647C200C0D29E /* Audio in Resources */ = {isa = PBXBuildFile; fileRef = 8159D9CE23C647C200C0D29E /* Audio */; };
@@ -42,6 +46,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		813560A023C79DAA00C91324 /* Aston-Coursework.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Aston-Coursework.xcdatamodel"; sourceTree = "<group>"; };
+		813560A223C7A37A00C91324 /* PersistenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceService.swift; sourceTree = "<group>"; };
+		813560A423C7A68E00C91324 /* Score+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Score+CoreDataClass.swift"; sourceTree = "<group>"; };
+		813560A523C7A68E00C91324 /* Score+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Score+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		8141B99B23C3BDA5008BEB69 /* AudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 		8141B99D23C3BE51008BEB69 /* AnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
 		8159D9CE23C647C200C0D29E /* Audio */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Audio; sourceTree = "<group>"; };
@@ -113,7 +121,10 @@
 		D9526E42239E8E5D003B281C /* Aston-Coursework */ = {
 			isa = PBXGroup;
 			children = (
+				813560A423C7A68E00C91324 /* Score+CoreDataClass.swift */,
+				813560A523C7A68E00C91324 /* Score+CoreDataProperties.swift */,
 				D9526E43239E8E5D003B281C /* AppDelegate.swift */,
+				813560A223C7A37A00C91324 /* PersistenceService.swift */,
 				D9526E45239E8E5D003B281C /* SceneDelegate.swift */,
 				8171E1BC23C1551600CBEA44 /* MenuViewController.swift */,
 				D9526E47239E8E5D003B281C /* ViewController.swift */,
@@ -127,6 +138,7 @@
 				D9526E4C239E8E5D003B281C /* Assets.xcassets */,
 				D9526E51239E8E5D003B281C /* Info.plist */,
 				D9526E4E239E8E5D003B281C /* LaunchScreen.storyboard */,
+				8135609F23C79DAA00C91324 /* Aston-Coursework.xcdatamodeld */,
 			);
 			path = "Aston-Coursework";
 			sourceTree = "<group>";
@@ -281,10 +293,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				813560A623C7A68E00C91324 /* Score+CoreDataClass.swift in Sources */,
 				8171E1BF23C158FA00CBEA44 /* EndViewController.swift in Sources */,
 				8141B99C23C3BDA5008BEB69 /* AudioController.swift in Sources */,
 				D9526E48239E8E5D003B281C /* ViewController.swift in Sources */,
+				813560A323C7A37A00C91324 /* PersistenceService.swift in Sources */,
+				813560A123C79DAA00C91324 /* Aston-Coursework.xcdatamodeld in Sources */,
 				8171E1BD23C1551600CBEA44 /* MenuViewController.swift in Sources */,
+				813560A723C7A68E00C91324 /* Score+CoreDataProperties.swift in Sources */,
 				D9526E44239E8E5D003B281C /* AppDelegate.swift in Sources */,
 				817A71AA23C2433600BD3FA9 /* CompleteViewController.swift in Sources */,
 				8141B99E23C3BE51008BEB69 /* AnimationController.swift in Sources */,
@@ -614,6 +630,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8135609F23C79DAA00C91324 /* Aston-Coursework.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				813560A023C79DAA00C91324 /* Aston-Coursework.xcdatamodel */,
+			);
+			currentVersion = 813560A023C79DAA00C91324 /* Aston-Coursework.xcdatamodel */;
+			path = "Aston-Coursework.xcdatamodeld";
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D9526E38239E8E5D003B281C /* Project object */;
 }

@@ -47,6 +47,14 @@
                                     <action selector="closeButtonPressed:" destination="gAV-Gi-Llj" eventType="touchUpInside" id="4F4-WM-LJE"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cz-zh-Qwn">
+                                <rect key="frame" x="530" y="194" width="39" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Reset"/>
+                                <connections>
+                                    <action selector="resetScoresButtonPressed:" destination="gAV-Gi-Llj" eventType="touchUpInside" id="JMA-YK-TlX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="qzi-Ue-boj"/>
@@ -56,6 +64,7 @@
                         <outlet property="creditsButton" destination="pvZ-as-3pb" id="qGu-pX-2cX"/>
                         <outlet property="playButton" destination="kJs-tk-Ht0" id="U4K-T8-vGg"/>
                         <outlet property="quitButton" destination="3wa-8d-FGt" id="vbb-Nl-cPh"/>
+                        <outlet property="resetScoresButton" destination="3cz-zh-Qwn" id="wcd-wi-k8x"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gj4-qI-Ckj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -86,6 +95,13 @@
                                     <segue destination="gAV-Gi-Llj" kind="presentation" id="p28-ow-Lcm"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="scoresLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HF9-Py-LYd">
+                                <rect key="frame" x="287" y="286" width="93" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="CeQ-Ms-um6"/>
@@ -93,6 +109,7 @@
                     <connections>
                         <outlet property="mainMenuButton" destination="USl-3b-TBK" id="NmI-OA-g21"/>
                         <outlet property="replayButton" destination="BEa-AW-zbR" id="Nap-zJ-929"/>
+                        <outlet property="scoresLabel" destination="HF9-Py-LYd" id="GBd-id-Jnx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vJP-1C-1gD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

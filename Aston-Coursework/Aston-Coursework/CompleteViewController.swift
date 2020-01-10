@@ -7,10 +7,15 @@
 //
 
 import UIKit
+import CoreData
+
+var scores = [Score]()
+var lastScore = 0
 
 class CompleteViewController: UIViewController {
 
     /* Interface Builder: Outlets/Actions */
+    @IBOutlet weak var scoresLabel: UILabel!
     @IBOutlet weak var mainMenuButton: UIButton!
     @IBOutlet weak var replayButton: UIButton!
     @IBAction func replayButtonPressed(_ sender: Any) {
@@ -23,9 +28,39 @@ class CompleteViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        lastScore = timeRemaining
+        saveScore()
         initialiseUI()
         playWinSound()
+        
     }
+    
+
+    
+    func saveScore(){
+        let player = Score(context: PersistenceService.context)
+        player.name = playerName
+        player.score = Int16(timeRemaining)
+        PersistenceService.saveContext()
+        scores.append(player)
+    }
+    
+    
+    func initialiseScores(){
+        scoresLabel.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch), height: (screenHeight/8)*3)
+        scoresLabel.center.x = completeUI.center.x
+        scoresLabel.textAlignment = .center
+        scoresLabel.textColor = UIColor.white
+        scoresLabel.text = "Scores (Total Time Remaining over 3 Levels)\n\n\(getPlayerScore())\n\(getHighScore())"
+        scoresLabel.numberOfLines = 0
+        self.view.addSubview(scoresLabel)
+    }
+    
+    public func getPlayerScore() -> (String){
+        let playerScoreStr: String = "Your Score: " + String(timeRemaining) + " (" + playerName! + ")"
+        return playerScoreStr
+    }
+    
     func initialiseUI() {
 
         completeUI.frame = CGRect(x: 0, y: 0, width: screenWidth + maxNotch, height: screenHeight)
@@ -36,6 +71,7 @@ class CompleteViewController: UIViewController {
         initialiseGameCompletedLogo()
         initialiseReplayButton()
         initialiseMainMenuButton()
+        initialiseScores()
 
         self.view.sendSubviewToBack(completeUI)
     }
@@ -43,7 +79,7 @@ class CompleteViewController: UIViewController {
     func initialiseGameCompletedLogo(){
         let completeLogoHeight = (screenHeight/8)*2.5
         let gameCompletedLogo = UIImageView(image: nil)
-        gameCompletedLogo.frame = CGRect(x:0, y: (screenHeight/8), width: completeLogoHeight*5.5, height: completeLogoHeight)
+        gameCompletedLogo.frame = CGRect(x:0, y: (screenHeight/14), width: completeLogoHeight*5.5, height: completeLogoHeight)
         gameCompletedLogo.center.x = completeUI.center.x
 
         gameCompletedLogo.image = UIImage(named:"gameComplete")
@@ -53,7 +89,7 @@ class CompleteViewController: UIViewController {
     }
     
     func initialiseReplayButton(){
-        replayButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
+        replayButton.frame = CGRect(x:0, y: (screenHeight/8)*3, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         replayButton.center.x = completeUI.center.x
         
         replayButton.layer.cornerRadius = 5
@@ -64,7 +100,7 @@ class CompleteViewController: UIViewController {
     }
     
     func initialiseMainMenuButton(){
-        mainMenuButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
+        mainMenuButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         mainMenuButton.center.x = completeUI.center.x
         
         mainMenuButton.layer.cornerRadius = 5
@@ -85,3 +121,24 @@ class CompleteViewController: UIViewController {
     }
 
 }
+
+public func getHighScore() -> (String){
+    var highscoreVal = 0
+    var highscoreNameStr = ""
+    var count = 0
+    
+    for _ in scores {
+        if scores[count].score > highscoreVal {
+            highscoreVal = Int(scores[count].score)
+            highscoreNameStr = scores[count].name!
+        }
+        count+=1
+    }
+    if highscoreVal == 0 {
+        return "Highscore: Nothing set yet"
+    } else {
+        let highscoreStr: String = "Highscore: " + String(highscoreVal) + " seconds set by " + highscoreNameStr
+        return highscoreStr
+    }
+}
+

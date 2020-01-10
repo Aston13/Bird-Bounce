@@ -7,18 +7,39 @@
 //
 var menuViewControllerInstance = MenuViewController()
 import UIKit
+import CoreData
+var timeRemaining = 0
+var playerName: String?
+let creditsLabel = UILabel()
+var lastScoreText: String?
 
-class MenuViewController: UIViewController {
-
+class MenuViewController: UIViewController, UITextFieldDelegate {
+    let enterName = UITextField()
     /* Interface Builder: Outlets/Actions */
-
+    @IBOutlet weak var resetScoresButton: UIButton!
+    @IBAction func resetScoresButtonPressed(_ sender: Any) {
+        deleteScoreData()
+        if lastScore == 0 {
+            lastScoreText = "Nothing set yet"
+        } else {
+            lastScoreText = String(lastScore)
+        }
+        
+        creditsLabel.text = "Scores\n\nLast Score: \(lastScoreText ?? "Nothing set yet")\nHighscore: Nothing set yet\n\nDeveloped by Aston Turner"
+    }
     @IBOutlet weak var playButton: UIButton!
     @IBAction func playButtonPressed(_ sender: Any) {
-        audioPlayer3?.stop()
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "Main") as! ViewController
-        vc.dismiss(animated: false, completion: nil)
-        vc.selectLevel(level: 1)
-        self.present(vc, animated: false, completion: nil)
+        
+        if enterName.hasText == false {
+            enterName.layer.borderColor = UIColor.red.cgColor
+        } else {
+            playerName = enterName.text
+            audioPlayer3?.stop()
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "Main") as! ViewController
+            vc.dismiss(animated: false, completion: nil)
+            vc.selectLevel(level: 1)
+            self.present(vc, animated: false, completion: nil)
+        }
         
     }
 
@@ -55,10 +76,18 @@ class MenuViewController: UIViewController {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "Main") as! ViewController
         vc.dismiss(animated: false, completion: nil)
         
+        let fetchRequest: NSFetchRequest<Score> = Score.fetchRequest()
+        
+        do {
+            let scoresFetch = try PersistenceService.context.fetch(fetchRequest)
+            scores = scoresFetch
+        } catch {
+            print(error)
+        }
         
         menuDynamicAnimator = UIDynamicAnimator(referenceView: self.view)
         
-        
+        self.enterName.delegate = self
         menuViewControllerInstance = self
         initialiseUI()
         playMenuMusic()
@@ -77,11 +106,13 @@ class MenuViewController: UIViewController {
         self.view.addSubview(menuUI)
         
         initialiseGameLogo()
+        initialiseEnterName()
         initialiseStartButton()
         initialiseCreditsButton()
         initialiseQuitButton()
         initialiseCloseButton()
         initialiseCreditsLabel()
+        initialiseResetScoresButton()
         
         self.view.sendSubviewToBack(menuUI)
     }
@@ -96,12 +127,25 @@ class MenuViewController: UIViewController {
         self.view.addSubview(gameLogo)
     }
     
+    func initialiseEnterName() {
+        enterName.layer.cornerRadius = 5
+        enterName.layer.borderWidth = 2
+        enterName.layer.borderColor = UIColor.lightGray.cgColor
+        enterName.backgroundColor = UIColor.lightGray
+        enterName.textAlignment = .center
+        enterName.placeholder = "Enter Name"
+        enterName.keyboardType = .asciiCapable
+        enterName.frame = CGRect(x:0, y: (screenHeight/8)*3, width: (screenWidth+maxNotch)/2.75, height: screenHeight/8)
+        enterName.center.x = menuUI.center.x
+        self.view.addSubview(enterName)
+    }
+    
     func initialiseStartButton() {
         playButton.layer.cornerRadius = 5
         playButton.layer.borderWidth = 1
         playButton.layer.borderColor = UIColor.lightGray.cgColor
         
-        playButton.frame = CGRect(x:0, y: (screenHeight/8)*3, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
+        playButton.frame = CGRect(x:0, y: 1+(screenHeight/8)*4, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         playButton.center.x = menuUI.center.x
         playButton.setBackgroundImage(UIImage(named:"Play"), for: .normal)
         playButton.setTitle(nil, for: .normal)
@@ -112,7 +156,7 @@ class MenuViewController: UIViewController {
         creditsButton.layer.borderWidth = 1
         creditsButton.layer.borderColor = UIColor.lightGray.cgColor
         
-        creditsButton.frame = CGRect(x:0, y: (screenHeight/8)*4, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
+        creditsButton.frame = CGRect(x:0, y: 2+(screenHeight/8)*5, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         creditsButton.center.x = menuUI.center.x
         creditsButton.setBackgroundImage(UIImage(named:"Credits"), for: .normal)
         creditsButton.setTitle(nil, for: .normal)
@@ -127,25 +171,42 @@ class MenuViewController: UIViewController {
     }
     
     func initialiseQuitButton() {
-        //quitButton.backgroundColor = UIColor.systemBlue
         quitButton.layer.cornerRadius = 5
         quitButton.layer.borderWidth = 1
         quitButton.layer.borderColor = UIColor.lightGray.cgColor
         
-        quitButton.frame = CGRect(x:0, y: (screenHeight/8)*5, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
+        quitButton.frame = CGRect(x:0, y: 3+(screenHeight/8)*6, width: (screenWidth+maxNotch)/5.5, height: screenHeight/8)
         quitButton.center.x = menuUI.center.x
         quitButton.setBackgroundImage(UIImage(named:"Quit"), for: .normal)
         quitButton.setTitle(nil, for: .normal)
     }
     
     func initialiseCreditsLabel() {
-        let creditsLabel = UILabel()
-        creditsLabel.frame = CGRect(x:screenWidth - (screenWidth+maxNotch)/2, y: (screenHeight/8)*7, width: (screenWidth+maxNotch)/2, height: screenHeight/8)
+        creditsLabel.frame = CGRect(x:screenWidth - (screenWidth+maxNotch)/2.8, y: (screenHeight/8)*5.5, width: (screenWidth+maxNotch)/2.8, height: (screenHeight/8)*2.5)
         creditsLabel.textAlignment = .right
         creditsLabel.textColor = UIColor.white
-        creditsLabel.text = "Developed by Aston Turner"
         
+        if lastScore == 0 {
+            lastScoreText = "Nothing set yet"
+        } else {
+            lastScoreText = String(lastScore)
+        }
+        
+        creditsLabel.text = "Scores\n\nLast Score: \(lastScoreText ?? "Nothing set yet")\n\(getHighScore())\n\nDeveloped by Aston Turner"
+        creditsLabel.adjustsFontSizeToFitWidth = true
+        creditsLabel.numberOfLines = 6
         self.view.addSubview(creditsLabel)
+    }
+    
+    func initialiseResetScoresButton() {
+        resetScoresButton.setTitle("Reset Highscore", for: .normal)
+        resetScoresButton.setTitleColor(UIColor.systemBlue, for: .normal)
+        resetScoresButton.frame = CGRect(x:screenWidth - (screenWidth+maxNotch)/7.5, y: (screenHeight/2), width: (screenWidth+maxNotch)/7.5, height: (screenHeight/8))
+        resetScoresButton.layer.borderColor = UIColor.lightGray.cgColor
+        resetScoresButton.center.y = self.view.center.y
+        resetScoresButton.layer.borderWidth = 1
+        resetScoresButton.layer.cornerRadius = 5
+        self.view.addSubview(resetScoresButton)
     }
     
     
@@ -206,6 +267,8 @@ class MenuViewController: UIViewController {
         
     }
     
+
+    
     private func showCreditsPop() {
         creditsView.frame = creditsFrame
         creditsView.textContainerInset = UIEdgeInsets(top: 50, left: 50, bottom: 50, right: 50)
@@ -255,5 +318,27 @@ class MenuViewController: UIViewController {
     /* Function to allow autorotate of orientation. */
     override var shouldAutorotate: Bool {
         return true
+    }
+    
+    /* Functions to hide keyboard after use */
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
+        super.touchesBegan(touches, with: event)
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+        return false
+    }
+    /* Deletes (resets) all data from the Score CoreData entity */
+    func deleteScoreData() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Score")
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+        do {
+            try PersistenceService.context.execute(deleteRequest)
+            print("SCORES DELETED")
+        } catch let error as NSError {
+            print(error)
+        }
     }
 }
