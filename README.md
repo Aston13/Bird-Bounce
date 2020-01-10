@@ -9,13 +9,15 @@ which have collision boundaries attached.
 
 ## Demo Video
 
-YouTube: https://youtu.be/bm32XMrUeVo
+YouTube: 
 
 ## Extra Features
 
+* Added a highscore/player name system with CRUD operations by using CoreData.
 * Short vibration when ball is shot.
 * Short vibration when bird is killed.
 * Menu music (looped).
+* Ball is half the size on level 3 to increase difficulty.
 * Sound effects: Bird death, ball shot, game won, game lost.
 * Animations: Twinkling stars (on menu screen background), explosion (on bird death)
 * Obstacles with collision behaviours, each time the game is played the obstacles generated are a new random size/position.
