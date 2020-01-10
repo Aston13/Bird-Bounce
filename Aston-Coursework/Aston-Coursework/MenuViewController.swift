@@ -206,6 +206,7 @@ class MenuViewController: UIViewController, UITextFieldDelegate {
         resetScoresButton.center.y = self.view.center.y
         resetScoresButton.layer.borderWidth = 1
         resetScoresButton.layer.cornerRadius = 5
+        resetScoresButton.titleLabel?.adjustsFontSizeToFitWidth = true
         self.view.addSubview(resetScoresButton)
     }
     
