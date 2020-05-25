@@ -1,7 +1,7 @@
-# 16052488
-Mobile Computing Coursework
+# Bird Bounce
+Mobile Computing
 
-University (module: Mobile Computing) project. I used the Swift programming language and Xcode to create a game I named 'Bird Bounce'.
+I used the Swift programming language and Xcode to create a game I named 'Bird Bounce'.
 The aim of the game is for the player to shoot the birds to gain points. By meeting the level points goal the player is 
 progressed to the next level, the game consists of 3 levels in total, after which, the game is completed 
 and can be played again from the beginning. The levels become more difficult by the appearance of random obstacles 
